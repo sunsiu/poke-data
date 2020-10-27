@@ -2,6 +2,24 @@ html {
     font-family: 'Roboto', sans-serif;
 }
 
+body {
+    margin: 0;
+    background-color: rgb(235, 235, 235);
+}
+
+#header-wrap {
+    /* background-color: #ea2223; */
+    background: linear-gradient(180deg, #ea2223 50%, white 50%);
+    padding: 5px;
+    /* border-bottom: 150px solid white; */
+}
+
+#title-img {
+    display: block;
+    margin-left: 47%;
+    margin-right: auto;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: auto auto;
@@ -14,13 +32,13 @@ html {
 }
 
 .item-title {
-    grid-column: 1/1;
+    grid-column: 1/ 3;
     grid-row: 1/2;
 }
 
 .item-table {
     grid-column: 2/2;
-    grid-row: 1 / spans 12;
+    grid-row: 2 / spans 12;
 }
  
 .item-infocard {
