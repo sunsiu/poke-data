@@ -1,0 +1,40 @@
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 50px;
+    grid-row-gap: 10px;
+}
+
+[class^="item-"] {
+    border: 2px solid #eb6123;
+}
+
+.item-title {
+    grid-column: 1/1;
+    grid-row: 1/2;
+}
+
+.item-table {
+    grid-column: 2/2;
+    grid-row: 1 / spans 12;
+}
+ 
+.item-infocard {
+    grid-column: 1/1;
+    grid-row: 2/5;
+}
+ 
+.item-scatterplot {
+    grid-column: 1/1;
+    grid-row: 5/9;
+}
+ 
+.item-stats {
+    grid-column: 1/1;
+    grid-row: 9/13;
+}
+ 
