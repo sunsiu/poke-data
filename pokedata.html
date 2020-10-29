@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>POKEDATA</title>
     <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/infocard.css"/>
     <link rel="stylesheet" href="css/table.css"/>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <script src="https://d3js.org/d3.v5.js"></script>
@@ -13,19 +14,36 @@
 </head>
 
 <body>
+<div id="header-wrap" class="item-title">
+    <header class="grid-container">
+        <img id="title-img" src="assets/title-yellow.png">
+    </header>
+</div>
 <div class="grid-container">
-    <div id="header-wrap" class="item-title">
-        <header class="grid-container">
-            <img id="title-img" src="assets/title-yellow.png">
-        </header>
+    <div id="nav"></div>
+    <div id="table" class="item-table"></div>
+    <div class="item-infocard">
+        <div id="infocard">
+            <div class="infocard-header">
+                <div id="info-name">Charmander</div>
+            </div>
+            <div class="infocard-body">
+                <div class="sprite-container">
+                    <img class="sprite" src="sprites/pokemon/4.png">
+                </div>
+                <div id="info-types">Fire</div>
+                <div id="info-height">Height: </div>
+                <div id="info-weight">Weight: </div>
+                <div class="radarchart">INSERT CHART HERE</div>
+                <button class="evolves-from">Evolves From</button>
+                <button class="evolves-to">Evolves To</button>
+            </div>
+        </div>
     </div>
-    <div id="table" class="item-table">
-    </div>
-    <div id="infocard" class="item-infocard"></div>
     <div id="scatterplot" class="item-scatterplot"></div>
     <div id="stats" class="item-stats"></div>
 </div>
-
+<script src="js/infocard.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

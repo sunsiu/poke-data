@@ -1,0 +1,86 @@
+#infocard {
+    border-radius: 5px 5px 0;
+    max-width: 430px;
+    height: 280px;
+    color: white;
+}
+
+.infocard-header {
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    height: 10%;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.1), 
+        rgba(0, 0, 0, 0.1)
+      );
+}
+
+#info-name {
+    font-weight: bold;
+    font-size: 16pt;
+}
+
+.infocard-body {
+    display: grid;
+    padding: 15px;
+    grid-gap: 5px;
+    height: 75%;
+}
+
+.sprite-container {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    background-color: white;
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 2;
+}
+
+.sprite {
+    height: 100px;
+    width: 100px;
+}
+
+#info-types {
+    grid-column: 1 / span 1;
+    grid-row: 3 / span 1;
+}
+
+#info-height {
+    grid-column: 1 / span 1;
+    grid-row: 4 / span 1;
+}
+
+#info-weight {
+    grid-column: 1 / span 1;
+    grid-row: 5 / span 1;
+}
+
+.radarchart {
+    grid-column: 3/ span 4;
+    grid-row: 1/ span 3;
+}
+
+.evolves-from {
+    padding: 0;
+    grid-column: 3/ span 2;
+    grid-row: 4/ span 2; 
+}
+
+.evolves-to {
+    padding: 0;
+    grid-column: 5/ span 2;
+    grid-row: 4/ span 2; 
+}
+
+/* weak against
+strong against
+neutral againt
+radar chart
+name
+pokedex number
+evolves to
+evolves from
+types
+height
+weight */
