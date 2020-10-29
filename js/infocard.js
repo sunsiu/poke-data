@@ -14,6 +14,7 @@ class Infocard {
         header.select("#info-name").text(`${data.name} #${data.pokedex_number}`);
 
         d3.select("#infocard").attr("class", `${data.type1}-type`);
+        body.select(".sprite").attr("src", `sprites/pokemon/${data.pokedex_number}.png`)
         body.select("#info-types").html(this.renderTypes(data.type1, data.type2));
         body.select("#info-height").text(`Height:  ${data.height_m}m`);
         body.select("#info-weight").text(`Weight:  ${data.weight_kg}kg`);
