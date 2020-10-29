@@ -1,0 +1,39 @@
+#table {
+    width: 900px;
+    table-layout: fixed;
+    margin: auto;
+}
+
+#table thead {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    height: 50px;
+    font-size: 14pt;
+    font-weight: bold;
+    border-bottom: 3px solid gray;
+}
+
+#table tbody {
+    display: block;
+    overflow: auto;
+    height: 900px;
+    width: 100%;
+}
+
+#table tbody tr {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    border-bottom: 0.5px solid lightgray;
+}
+
+#table td {
+    padding: 5px 10px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.row:hover {
+    background: rgb(224, 224, 224);
+}

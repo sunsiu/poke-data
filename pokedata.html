@@ -21,7 +21,25 @@
 </div>
 <div class="grid-container">
     <div id="nav"></div>
-    <div id="table" class="item-table"></div>
+    <div id="table-wrapper" class="item-table">
+        <table id="table">
+            <thead>
+            <tr>
+                <th class="sortable">#</th>
+                <th class="sortable">Name</th>
+                <th class="sortable">Type 1</th>
+                <th class="sortable">Type 2</th>
+                <th class="sortable">HP</th>
+                <th class="sortable">Attack</th>
+                <th class="sortable">Defense</th>
+                <th class="sortable">Special Attack</th>
+                <th class="sortable">Special Defense</th>
+                <th class="sortable">Speed</th>
+            </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
     <div class="item-infocard">
         <div id="infocard">
             <div class="infocard-header">
@@ -43,6 +61,7 @@
     <div id="scatterplot" class="item-scatterplot"></div>
     <div id="stats" class="item-stats"></div>
 </div>
+<script src="js/table.js"></script>
 <script src="js/infocard.js"></script>
 <script src="js/script.js"></script>
 </body>
