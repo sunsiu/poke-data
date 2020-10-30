@@ -81,6 +81,12 @@ body {
     grid-row: 10/14;
 }
 
+
+img[class$="-badge"] {
+    width: 60px;
+    height: 15px;
+}
+
 .grass-type {
     background-color: #7cc251;
 }
