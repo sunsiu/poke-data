@@ -24,4 +24,9 @@ class Table {
         let cells = [d.pokedex_number, d.name, d.type1, d.type2, d.hp, d.attack, d.defense, d.sp_attack, d.sp_defense, d.speed];
         return cells;
     }
+
+    updateData(newData) {
+        this.data = newData;
+        this.drawTable();
+    }
 }

@@ -20,7 +20,21 @@
     </header>
 </div>
 <div class="grid-container">
-    <div id="nav"></div>
+    <div id="nav">
+        <div class="selector-container">
+            <label id="selector-label">Choose Generation: </label>
+            <select name="Dataset" id="dataset-selector" class="form-control">
+                <option value="all">All Generations</option>
+                <option value=1>Gen 1</option>
+                <option value=2>Gen 2</option>
+                <option value=3>Gen 3</option>
+                <option value=4>Gen 4</option>
+                <option value=5>Gen 5</option>
+                <option value=6>Gen 6</option>
+                <option value=7>Gen 7</option>
+            </select>
+        </div>
+    </div>
     <div id="table-wrapper" class="item-table">
         <table id="table">
             <thead>
@@ -53,8 +67,8 @@
                 <div id="info-height">Height: </div>
                 <div id="info-weight">Weight: </div>
                 <div class="radarchart">INSERT CHART HERE</div>
-                <button class="evolves-from">Evolves From</button>
-                <button class="evolves-to">Evolves To</button>
+                <button id="evolves-from" class="my-btn">Evolves From</button>
+                <button id="evolves-to" class="my-btn">Evolves To</button>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 #infocard {
-    border-radius: 5px 5px 0;
+    border-radius: 7px;
     max-width: 430px;
     height: 280px;
     color: white;
@@ -8,7 +8,7 @@
 .infocard-header {
     padding: 10px;
     border-radius: 5px 5px 0 0;
-    height: 10%;
+    height: 30px;
     background: linear-gradient(
         rgba(0, 0, 0, 0.1), 
         rgba(0, 0, 0, 0.1)
@@ -61,13 +61,31 @@
     grid-row: 1/ span 3;
 }
 
-.evolves-from {
+.my-btn:hover {
+    background: rgb(240, 240, 240);
+}
+
+.my-btn, .my-btn:active {
+    border-radius: 5px;
+    background: white;
+    text-align: center;
+    border: none;
+    height: 40px;
+    width: 100px;
+    line-height: 1;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+#evolves-from {
     padding: 0;
     grid-column: 3/ span 2;
     grid-row: 4/ span 2; 
 }
 
-.evolves-to {
+#evolves-to {
     padding: 0;
     grid-column: 5/ span 2;
     grid-row: 4/ span 2; 
