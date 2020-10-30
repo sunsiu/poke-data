@@ -1,7 +1,7 @@
 class Infocard {
-    constructor(selected) {
+    constructor(selected, renderTypes) {
         this.selected = null;
-
+        this.renderTypes = renderTypes;
         this.updateSelected(selected);
     }
 
@@ -15,7 +15,7 @@ class Infocard {
 
         d3.select("#infocard").attr("class", `${data.type1}-type`);
         body.select(".sprite").attr("src", `sprites/pokemon/${data.pokedex_number}.png`)
-        body.select("#info-types").html(this.renderTypes(data.type1, data.type2));
+        body.select("#info-types").html(`<label>Types:</label>${this.renderTypes(data.type1, data.type2)}`);
         body.select("#info-height").text(`Height:  ${data.height_m}m`);
         body.select("#info-weight").text(`Weight:  ${data.weight_kg}kg`);
 
@@ -26,9 +26,5 @@ class Infocard {
             sp_attack: data.sp_attack,
             sp_defense: data.sp_defense
         }
-    }
-
-    renderTypes(type1, type2) {
-        return `${type1}`
     }
 }

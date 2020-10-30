@@ -1,7 +1,7 @@
 d3.csv('./data/pokemon.csv').then(function (data) {
     console.log(data)
     
-    let infocard = new Infocard(data[3]);
+    let infocard = new Infocard(data[3], typeRender);
     let table = new Table(data, updateInfocard);
     
     function updateInfocard(data) {
@@ -26,5 +26,19 @@ function setupBanner(data, updateAllData) {
 
         updateAllData(dataset);
     });
+}
+
+function typeRender(type1, type2) {
+    if (type2 !== "") {
+        return `
+        <div class="type-container">
+            <img class="${type1}-badge" src="sprites/types/${type1}.png">
+            <img class="${type2}-badge" src="sprites/types/${type2}.png">
+        </div>`
+    }
+    return `
+    <div class="type-container">
+        <img class="${type1}-badge" src="sprites/types/${type1}.png">
+    </div>`;
 }
 

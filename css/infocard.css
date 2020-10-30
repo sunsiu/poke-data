@@ -42,23 +42,33 @@
 }
 
 #info-types {
-    grid-column: 1 / span 1;
-    grid-row: 3 / span 1;
+    grid-column: 1 / span 2;
+    grid-row: 3 / span 2;
+}
+
+.type-container {
+    width: 125px;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.2), 
+        rgba(0, 0, 0, 0.2)
+      );
+    padding: 7px 5px 2px 5px;
+    margin-top: 5px;
 }
 
 #info-height {
     grid-column: 1 / span 1;
-    grid-row: 4 / span 1;
+    grid-row: 5 / span 1;
 }
 
 #info-weight {
     grid-column: 1 / span 1;
-    grid-row: 5 / span 1;
+    grid-row: 6 / span 1;
 }
 
 .radarchart {
     grid-column: 3/ span 4;
-    grid-row: 1/ span 3;
+    grid-row: 1/ span 5;
 }
 
 .my-btn:hover {
@@ -82,13 +92,13 @@
 #evolves-from {
     padding: 0;
     grid-column: 3/ span 2;
-    grid-row: 4/ span 2; 
+    grid-row: 5/ span 2; 
 }
 
 #evolves-to {
     padding: 0;
     grid-column: 5/ span 2;
-    grid-row: 4/ span 2; 
+    grid-row: 5/ span 2; 
 }
 
 /* weak against
