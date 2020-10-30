@@ -41,10 +41,12 @@
 
 .sortable:hover {
     background: rgb(207, 207, 207);
+    border-radius: 5px;
     cursor: pointer;
 }
 
 .sorting {
     background: darkgray;
     color: white;
+    border-radius: 5px;
 }
