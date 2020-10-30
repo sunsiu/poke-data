@@ -36,4 +36,15 @@
 
 .row:hover {
     background: rgb(224, 224, 224);
+    cursor: pointer;
+}
+
+.sortable:hover {
+    background: rgb(207, 207, 207);
+    cursor: pointer;
+}
+
+.sorting {
+    background: darkgray;
+    color: white;
 }
