@@ -1,10 +1,12 @@
+let pokeData;
+let evolveData;
 Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')]).then(function (loaded) {
-    let pokeData = loaded[0];
-    let evolveData = loaded[1];
+    pokeData = loaded[0];
+    evolveData = loaded[1];
     console.log(pokeData)
     console.log(evolveData)
     
-    let infocard = new Infocard(pokeData[3], typeRender, evolveData);
+    let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree);
     let table = new Table(pokeData, updateInfocard);
     
     function updateInfocard(data) {
@@ -32,7 +34,7 @@ function setupBanner(data, updateAllData) {
 }
 
 function typeRender(type1, type2) {
-    if (type2 !== "") {
+    if (type2) {
         return `
         <div class="type-container">
             <img class="${type1}-badge" src="sprites/types/${type1}.png">
@@ -43,5 +45,32 @@ function typeRender(type1, type2) {
     <div class="type-container">
         <img class="${type1}-badge" src="sprites/types/${type1}.png">
     </div>`;
+}
+
+function getEvolutionTree(pokedex_id) {
+    const index = pokedex_id - 1
+    let current = evolveData[index];
+
+    // Get root of evolution tree
+    while(current.ev_from !== 0) {
+        current = evolveData[current.ev_from - 1];
+    }
+
+    let tree = addNode(current);
+    return tree;
+}
+
+function addNode(cur) {
+    let node = {};
+    node["id"] = cur.long_id;
+    node["name"] = pokeData[cur.long_id - 1].name;
+    node["children"] = [];
+
+    if(!cur.is_full_ev) {
+        for(let childId of cur.ev_to) {
+            node["children"].push(addNode(evolveData[childId - 1]));
+        }
+    }
+    return node
 }
 

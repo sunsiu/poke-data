@@ -1,8 +1,8 @@
 class Infocard {
-    constructor(selected, renderTypes, evolutionData) {
+    constructor(selected, renderTypes, getEvolutionTree) {
         this.selected = null;
         this.renderTypes = renderTypes;
-        this.evolutionData = evolutionData;
+        this.getEvolutionTree = getEvolutionTree;
         this.statNames = ['HP', 'ATK', 'DEF', 'SPEED', 'SP ATK', 'SP DEF'];
 
         let context = document.getElementById("statsChart").getContext('2d');
@@ -100,6 +100,10 @@ class Infocard {
     }
 
     drawEvolutionTree() {
-        
+        let tree = this.getEvolutionTree(this.selected.pokedex_number);
+        let treeSvg = d3.select(".family-tree").data(tree);
+
+        treeSvg.selectAll()
+
     }
 }
