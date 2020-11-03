@@ -12,6 +12,7 @@
     <script src="https://d3js.org/d3.v5.js"></script>
     <script src="https://d3js.org/d3-array.v2.min.js"></script>
     <script src="https://d3js.org/d3-force.v2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.0"></script>
 </head>
 
 <body>
@@ -67,10 +68,16 @@
                 <div id="info-types">Fire</div>
                 <div id="info-height">Height: </div>
                 <div id="info-weight">Weight: </div>
-                <div class="radarchart">INSERT CHART HERE</div>
-                <button id="evolves-from" class="my-btn">Evolves From</button>
-                <button id="evolves-to" class="my-btn">Evolves To</button>
+                <div class="radarchart-container">
+                    <canvas id="statsChart" width="330" height="171"></canvas>
+                    <span class="disclaimer">*Stats normalized to 100</span>
+                </div>
             </div>
+            <div id="evolve-container">
+                <label for="evolve-toggle" id="evolve-label">Evolution Chart</label>
+                <input id="evolve-toggle" type="checkbox"></input>
+            </div>
+            <div class="infocard-footer"></div>
         </div>
     </div>
     <div id="scatterplot" class="item-scatterplot"></div>

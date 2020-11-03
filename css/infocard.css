@@ -1,7 +1,7 @@
 #infocard {
     border-radius: 7px;
-    max-width: 430px;
-    height: 280px;
+    max-width: 500px;
+    height: 330px;
     color: white;
 }
 
@@ -23,8 +23,9 @@
 .infocard-body {
     display: grid;
     padding: 15px;
-    grid-gap: 5px;
-    height: 75%;
+    padding-bottom: 0px;
+    height: 210px;
+    margin-bottom: 20px;
 }
 
 .sprite-container {
@@ -57,58 +58,83 @@
 }
 
 #info-height {
-    grid-column: 1 / span 1;
+    grid-column: 1 / span 2;
     grid-row: 5 / span 1;
 }
 
 #info-weight {
-    grid-column: 1 / span 1;
+    grid-column: 1 / span 2;
     grid-row: 6 / span 1;
 }
 
-.radarchart {
-    grid-column: 3/ span 4;
+.radarchart-container {
+    margin-left: 10px;
+    padding-top: 17px;
+    padding-bottom: 0;
+    grid-column: 3/ span 5;
     grid-row: 1/ span 5;
+    background-color: #F8F0EA;
+    border-radius: 5px;
+    height: 190px;
+    width: 325px;
 }
 
-.my-btn:hover {
-    background: rgb(240, 240, 240);
+.disclaimer {
+    font-size: 8pt;
+    margin-left: 2px;
+    color: black;
+}
+/* .my-btn:hover {
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.2), 
+        rgba(0, 0, 0, 0.2)
+      );
 }
 
 .my-btn, .my-btn:active {
     border-radius: 5px;
-    background: white;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.1), 
+        rgba(0, 0, 0, 0.1)
+      );
+    color: white;
     text-align: center;
     border: none;
-    height: 40px;
-    width: 100px;
+    height: 30px;
+    width: 225px;
     line-height: 1;
     outline: none;
     font-weight: bold;
     cursor: pointer;
+} */
+
+#evolve-container:hover {
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.1), 
+        rgba(255, 255, 255, 0.1)
+      );;
 }
 
-
-#evolves-from {
-    padding: 0;
-    grid-column: 3/ span 2;
-    grid-row: 5/ span 2; 
+#evolve-container {
+    padding: 5px;
+    height: 25px;
+    text-align: center;
 }
 
-#evolves-to {
-    padding: 0;
-    grid-column: 5/ span 2;
-    grid-row: 5/ span 2; 
+#evolve-label {
+    display: block;
+    width: 100%;
+    cursor: pointer;
 }
 
-/* weak against
-strong against
-neutral againt
-radar chart
-name
-pokedex number
-evolves to
-evolves from
-types
-height
-weight */
+#evolve-toggle {
+    opacity: 0;
+}
+
+.infocard-footer {
+    margin-top: -5px;
+    padding: 0 15px;
+    display: none;
+    overflow: hidden;
+    /* max-height: 200px; */
+}

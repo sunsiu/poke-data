@@ -1,8 +1,11 @@
-d3.csv('./data/pokemon.csv').then(function (data) {
-    console.log(data)
+Promise.all([d3.csv('./data/pokemon.csv'), d3.csv('./data/evolutions.csv')]).then(function (loaded) {
+    let pokeData = loaded[0];
+    let evolveData = loaded[1];
+    console.log(pokeData)
+    console.log(evolveData)
     
-    let infocard = new Infocard(data[3], typeRender);
-    let table = new Table(data, updateInfocard);
+    let infocard = new Infocard(pokeData[3], typeRender, evolveData);
+    let table = new Table(pokeData, updateInfocard);
     
     function updateInfocard(data) {
         infocard.updateSelected(data);
@@ -12,7 +15,7 @@ d3.csv('./data/pokemon.csv').then(function (data) {
         infocard.updateSelected(dataset[3]);
         table.updateData(dataset);
     }
-    setupBanner(data, updateAllData);
+    setupBanner(pokeData, updateAllData);
 });
 
 function setupBanner(data, updateAllData) {
