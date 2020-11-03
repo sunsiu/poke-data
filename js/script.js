@@ -1,4 +1,4 @@
-Promise.all([d3.csv('./data/pokemon.csv'), d3.csv('./data/evolutions.csv')]).then(function (loaded) {
+Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')]).then(function (loaded) {
     let pokeData = loaded[0];
     let evolveData = loaded[1];
     console.log(pokeData)

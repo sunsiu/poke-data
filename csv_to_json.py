@@ -16,13 +16,15 @@ evol_df['ev_to'] = evol_df.ev_to.map(str_to_array)
 evol_df['evo_family'] =evol_df.evo_family.map(str_to_array)
 result = evol_df.to_json(orient="index")
 parsed = json.loads(result)
+parsed_list = [v for v in parsed.values()]
 
 with open("data/evolutions.json", 'w') as out:
-    json.dump(parsed, out)
+    json.dump(parsed_list, out)
 
 poke_df = pd.read_csv("data/pokemon.csv")
 result = poke_df.to_json(orient="index")
 parsed = json.loads(result)
+parsed_list = [v for v in parsed.values()]
 
 with open("data/pokemon.json", 'w') as out:
-    json.dump(parsed, out)
+    json.dump(parsed_list, out)
