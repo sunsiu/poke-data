@@ -89,72 +89,106 @@ img[class$="-badge"] {
 
 .grass-type {
     background-color: #7cc251;
+    fill: #7cc251
 }
 
 .rock-type {
     background-color: #b7a036;
+    fill: #b7a036;
 }
 
 .ice-type {
     background-color: #98d7d6;
+    fill: #98d7d6;
 }
 
 .dragon-type {
     background-color: #6457a5;
+    fill: #6457a5;
 }
 
 .dark-type {
     background-color: #6c537a;
+    fill: #6c537a;
 }
 
 .psychic-type {
     background-color: #f05888;
+    fill: #f05888;
 }
 
 .bug-type {
     background-color: #a8b939;
+    fill: #a8b939;
 }
 
 .flying-type {
     background-color: #9f8fc4;
+    fill: #9f8fc4;
 }
 
 .steel-type {
     background-color: #b8b8cf;
+    fill: #b8b8cf;
 }
 
 .fire-type {
     background-color: #ef802e;
+    fill: #ef802e;
 }
 
 .fighting-type {
     background-color: #c03228;
+    fill: #c03228;
 }
 
 .ground-type {
     background-color: #e0c067;
+    fill: #e0c067;
 }
 
 .ghost-type {
     background-color: #705999;
+    fill: #705999;
 }
 
 .poison-type {
     background-color: #d874d3;
+    fill: #d874d3;
 }
 
 .water-type {
     background-color: #718bc6;
+    fill: #718bc6;
 }
 
 .fairy-type {
     background-color: #ee99ac;
+    fill: #ee99ac;
 }
 
 .electric-type {
     background-color: #f8d031;
+    fill: #f8d031;
 }
 
 .normal-type {
     background-color: #a7a878;
+    fill: #a7a878;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 2px;
+    background: black;
+    border-radius: 2px;
+}
+
+.tooltip h2 {
+    margin: auto;
+    font: 16px sans-serif;
+    color: white;
 }
