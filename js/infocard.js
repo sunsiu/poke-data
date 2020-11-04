@@ -1,8 +1,10 @@
 class Infocard {
-    constructor(selected, renderTypes, getEvolutionTree) {
+    constructor(selected, renderTypes, getEvolutionTree, getPokemon) {
         this.selected = null;
         this.renderTypes = renderTypes;
         this.getEvolutionTree = getEvolutionTree;
+        this.getPokemon = getPokemon;
+
         this.statNames = ['HP', 'ATK', 'DEF', 'SPEED', 'SP ATK', 'SP DEF'];
 
         let context = document.getElementById("statsChart").getContext('2d');
@@ -69,8 +71,8 @@ class Infocard {
         d3.select("#infocard").attr("class", `${data.type1}-type`);
         body.select(".sprite").attr("src", `sprites/pokemon/${data.pokedex_number}.png`)
         body.select("#info-types").html(`<label>Types:</label>${this.renderTypes(data.type1, data.type2)}`);
-        body.select("#info-height").text(`Height:  ${data.height_m}m`);
-        body.select("#info-weight").text(`Weight:  ${data.weight_kg}kg`);
+        body.select("#info-height").text(`Height: ${data.height_m ? data.height_m : '?'} m`);
+        body.select("#info-weight").text(`Weight: ${data.weight_kg ? data.weight_kg : '?'} kg`);
         d3.select("#evolve-toggle")
             .on("change", function() {
                 if(d3.select('#evolve-toggle').node().checked) {
@@ -100,10 +102,55 @@ class Infocard {
     }
 
     drawEvolutionTree() {
-        let tree = this.getEvolutionTree(this.selected.pokedex_number);
-        let treeSvg = d3.select(".family-tree").data(tree);
+        let treeData = this.getEvolutionTree(this.selected.pokedex_number);
 
-        treeSvg.selectAll()
+        let root = d3.hierarchy(treeData);
+        const treeWidth = 435;
+        const treeHeight = 200;
+        let treeLayout = d3.tree().size([treeHeight, treeWidth]);
+        treeLayout(root);
 
+        let that = this;
+        // Nodes
+        let nodeGroups = d3.select('.family-tree')
+            .selectAll('g')
+            .data(root.descendants())
+            .join('g')
+            .attr("transform", d => `translate(${d.y + 30}, ${d.x})`)
+            .attr("id", d => `evo-${d.data.id}`)
+            .classed('node', true)
+            .on("click", function() {
+                const selectedId = this.id.slice(4);
+                that.updateSelected(that.getPokemon(+selectedId))
+            });;
+
+        // Nodes
+        nodeGroups.selectAll("circle")
+            .data(d => [d])
+            .join("circle")
+            .attr('r', 22)
+            .style("stroke", this.typeColorScale(this.selected))
+            .classed("evo-bubble", true)
+
+        nodeGroups.selectAll("image")
+            .data(d => [d])
+            .join("image")
+            .attr("href", d => `sprites/pokemon/${d.data.id}.png`)
+            .attr("height", 40)
+            .attr("width", 40)
+            .attr("x", -20)
+            .attr("y", -20)
+
+        // Links
+        d3.select('.family-tree')
+            .selectAll('line')
+            .data(root.links())
+            .join('line')
+            .classed('link', true)
+            .attr('x1', d => d.source.y + 52)
+            .attr('y1', d => d.source.x)
+            .attr('x2', d => d.target.y + 8)
+            .attr('y2', d => d.target.x);
+   
     }
 }

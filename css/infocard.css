@@ -133,8 +133,16 @@
 
 .infocard-footer {
     margin-top: -5px;
-    padding: 0 15px;
     display: none;
     overflow: hidden;
-    /* max-height: 200px; */
+}
+
+.evo-bubble {
+    fill: white;
+    stroke:lightgray;
+    stroke-width: 2;
+}
+
+.link {
+    stroke: lightgray;
 }
