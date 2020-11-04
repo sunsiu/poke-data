@@ -6,7 +6,7 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
     console.log(pokeData)
     console.log(evolveData)
     
-    let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree);
+    let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree, getPokemon);
     let table = new Table(pokeData, updateInfocard);
     
     function updateInfocard(data) {
@@ -47,6 +47,10 @@ function typeRender(type1, type2) {
     </div>`;
 }
 
+function getPokemon(id) {
+    return pokeData[id-1];
+}
+
 function getEvolutionTree(pokedex_id) {
     const index = pokedex_id - 1
     let current = evolveData[index];
@@ -64,6 +68,7 @@ function addNode(cur) {
     let node = {};
     node["id"] = cur.long_id;
     node["name"] = pokeData[cur.long_id - 1].name;
+    node["parent"] = cur.ev_from;
     node["children"] = [];
 
     if(!cur.is_full_ev) {
