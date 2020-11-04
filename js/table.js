@@ -5,18 +5,10 @@ class Table {
         this.visWidth = 84;
         this.visHeight = 25;
         this.colKeys = ["pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", "sp_attack", "sp_defense", "speed"];
-        this.hpScale = d3.scaleLinear()
-            .domain([d3.min(this.data, d => d.hp), d3.max(this.data, d => d.hp)])
-            .range([0, this.visWidth]);
-        this.typeColorScale = d3.scaleOrdinal()
-            .domain(['water', 'normal', 'grass', 'bug', 'fire', 'psychic',
-                     'rock', 'electric', 'ground', 'dark', 'poison', 'fighting',
-                     'dragon', 'ghost', 'ice', 'steel', 'fairy', 'flying'])
-            .range(['#718bc680', '#a7a87880', '#7cc25180', '#a8b93980', '#ef802e80', '#f0588880',
-                    '#b7a03680', '#f8d03180', '#e0c06780', '#6c537a80', '#d874d380', ' #c0322880',
-                    '#6457a580', '#70599980', '#98d7d680', '#b8b8cf80', '#ee99ac80', '#9f8fc480']);
+        this.visLabels = ['hp', 'attack', 'defense', 'sp_attack', 'sp_defense', 'speed']
+
         this.headerData = this.makeHeaderData();
-        
+
         this.attachSortHandlers();
         this.drawTable();
     }
@@ -147,8 +139,7 @@ class Table {
     }
 
     makeStatsVis(visSelection) {
-        let visVals = ['hp', 'attack', 'defense', 'sp_attack', 'sp_defense', 'speed']
-        visVals.forEach(stat => {
+        this.visLabels.forEach(stat => {
             let selection = visSelection.filter(d => d.stat === stat);
             let svg = selection.selectAll('svg')
                 .data(d => [d])
@@ -169,7 +160,12 @@ class Table {
             .data(d => [d])
             .join("rect")
             .attr("class", d => `${d.type}-type`)
-            .attr("width", d => this.hpScale(d.val))
+            .attr("width", d => {
+                let scale = d3.scaleLinear()
+                    .domain([d3.min(that.data, data => data[d.stat]), d3.max(this.data, data => data[d.stat])])
+                    .range([0, this.visWidth]);
+                return scale(d.val)
+            })
             .attr("height", this.visHeight)
             .on("mouseover", function(d) {
                 tooltip.style("opacity", 0.75)
