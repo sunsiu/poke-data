@@ -110,19 +110,31 @@ class Infocard {
         let treeLayout = d3.tree().size([treeHeight, treeWidth]);
         treeLayout(root);
 
-        let that = this;
+        let offset;
+        let height = root.height;
+        if (height == 0) {
+            offset = 250;
+        }
+        // else if (height == 1) {
+        //     offset = 60;
+        // }
+        else {
+            offset = 30;
+        }
         // Nodes
+        let that = this;
         let nodeGroups = d3.select('.family-tree')
             .selectAll('g')
             .data(root.descendants())
             .join('g')
-            .attr("transform", d => `translate(${d.y + 30}, ${d.x})`)
+            .attr("transform", d => `translate(${d.y + offset}, ${d.x})`) // Mirror the tree
             .attr("id", d => `evo-${d.data.id}`)
             .classed('node', true)
             .on("click", function() {
+                // Remove the "evo-" from the id
                 const selectedId = this.id.slice(4);
                 that.updateSelected(that.getPokemon(+selectedId))
-            });;
+            });
 
         // Nodes
         nodeGroups.selectAll("circle")
@@ -147,7 +159,7 @@ class Infocard {
             .data(root.links())
             .join('line')
             .classed('link', true)
-            .attr('x1', d => d.source.y + 52)
+            .attr('x1', d => d.source.y + offset + 22)
             .attr('y1', d => d.source.x)
             .attr('x2', d => d.target.y + 8)
             .attr('y2', d => d.target.x);
