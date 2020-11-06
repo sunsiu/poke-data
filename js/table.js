@@ -5,11 +5,15 @@ class Table {
         this.visWidth = 84;
         this.visHeight = 25;
         this.colKeys = ["pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", "sp_attack", "sp_defense", "speed"];
-        this.visLabels = ['hp', 'attack', 'defense', 'sp_attack', 'sp_defense', 'speed']
+        this.visLabels = this.colKeys.slice(4);
+        this.allTypes = ['water', 'normal', 'grass', 'bug', 'fire', 'psychic', 'rock', 'electric', 'ground', 'dark', 'poison', 'fighting',
+            'dragon', 'ghost', 'ice', 'steel', 'fairy', 'flying']
 
         this.headerData = this.makeHeaderData();
 
         this.attachSortHandlers();
+        this.attachFilterToggle();
+        this.drawFilters();
         this.drawTable();
     }
 
@@ -26,8 +30,15 @@ class Table {
         let tds = rows.selectAll("td")
             .data(this.getCellData)
             .join("td");
-        tds.filter(d => !d.vis)
+        tds.filter(d => !d.vis && !d.isType)
             .text(d => d.val);
+        let type_imgs = tds.filter(d => !d.vis && d.isType).text(d => d.val ? "" : "--");
+        type_imgs
+            .selectAll("img")
+            .data(d => [d])
+            .join("img")
+            .attr("src", d => d.val ? "sprites/types/" + d.val + ".png" : null)
+            .attr("class", d=> d.val ? d.val + "-badge" : null);
 
         let statsSelect = tds.filter(d => d.vis);
         this.makeStatsVis(statsSelect);
@@ -35,19 +46,31 @@ class Table {
 
     getCellData(d) {
         let cells = [];
-        let wordVals = [d.pokedex_number, d.name, d.type1, d.type2];
-        wordVals.forEach(d => {
-            let statInfo = {
-                vis: false,
-                val: d
-            };
-            cells.push(statInfo);
+        let wordVals = ["pokedex_number", "name", "type1", "type2"];
+        wordVals.forEach(key => {
+            if (key.includes("type")) {
+                let statInfo = {
+                    vis: false,
+                    isType: true,
+                    val: d[key]
+                };
+                cells.push(statInfo);
+            }
+            else {
+                let statInfo = {
+                    vis: false,
+                    isType: false,
+                    val: d[key]
+                };
+                cells.push(statInfo);
+            }
         });
 
         let visVals = ['hp', 'attack', 'defense', 'sp_attack', 'sp_defense', 'speed']
         visVals.forEach(key => {
             let statInfo = {
                 vis: true,
+                isType: false,
                 stat: key,
                 type: d.type1,
                 val: +d[key]
@@ -92,9 +115,8 @@ class Table {
 
     sortData(key, isAsc, func) {
         this.data.sort((a, b) => {
-            let sortKey = key;
-            let x = a[sortKey];
-            let y = b[sortKey];
+            let x = a[key];
+            let y = b[key];
 
             if (!isAsc) {
                 [x,y] = [y,x];
@@ -154,7 +176,8 @@ class Table {
     drawRects(selection) {
         let that = this;
         let tooltip = d3.select('#tool-tip')
-            .classed("tooltip", true);
+            .classed("tooltip", true)
+            .style("opacity", 0);
 
         selection.selectAll("rect")
             .data(d => [d])
@@ -162,7 +185,7 @@ class Table {
             .attr("class", d => `${d.type}-type`)
             .attr("width", d => {
                 let scale = d3.scaleLinear()
-                    .domain([d3.min(that.data, data => data[d.stat]), d3.max(this.data, data => data[d.stat])])
+                    .domain([0, d3.max(this.data, data => data[d.stat])])
                     .range([0, this.visWidth]);
                 return scale(d.val)
             })
@@ -181,6 +204,34 @@ class Table {
                 d3.select(this)
                     .style("opacity", 1)
             });
+    }
+
+    attachFilterToggle() {
+        let button = d3.select("#exp-button");
+        button.on('click', function() {
+            let filters = d3.select("#filters");
+        
+            if (filters.style("display") == 'none') {
+                filters.style("display", "grid");
+                button.select('i').classed("fa-sort-down", false)
+                    .classed("fa-sort-up", true);
+            }
+            else {
+                filters.style("display", "none");
+                button.select("i").classed("fa-sort-down", true)
+                    .classed("fa-sort-up", false);
+            }
+        });
+    }
+
+    drawFilters() {
+        let filterSel = d3.select("#filters");
+        let imgGroup = filterSel.select("#type-buttons");
+        this.allTypes.forEach(d => 
+            imgGroup
+                .append("img")
+                .attr("src", "sprites/types/" + d + ".png")
+                .attr("class", "filter-type-button"));
     }
 
     /**

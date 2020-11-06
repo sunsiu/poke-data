@@ -7,7 +7,7 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
     console.log(evolveData)
     
     let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree, getPokemon);
-    let table = new Table(pokeData, updateInfocard);
+    let table = new Table(pokeData, updateInfocard, typeRender);
     
     function updateInfocard(data) {
         infocard.updateSelected(data);

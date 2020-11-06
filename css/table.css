@@ -17,7 +17,7 @@
 #table tbody {
     display: block;
     overflow: auto;
-    height: 900px;
+    height: 800px;
     width: 100%;
 }
 
@@ -49,5 +49,63 @@
     background: darkgray;
     color: white;
     border-radius: 5px;
+}
+
+/* ----- Filters ----- */
+#filters {
+    height: 200px;
+    width: 900px;
+    margin: auto;
+    padding: 10px;
+    color: black;
+    font-size: 16pt;
+    border:1pt solid black;
+}
+
+#exp-button {
+    font-size: 16pt;
+    background-color:#222224;
+    color: white;
+    cursor: pointer;
+    padding: 5px 15px;
+    text-align: left;
+    outline:none;
+    display: inline-block;
+    border: none;
+    border-radius: 25px;
+    display: inline-block;
+  }
+
+#current-filters {
+    display: inline-block;
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+    display: none;
+}
+
+.filter-type-button {
+    width: 60px;
+    height: 20px;
+}
+
+#search-bar {
+    grid-column: 1 / 2;
+    grid-row: 1 / 1;
+}
+
+#type-buttons {
+    display: flex;
+    width: 230px;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    grid-column: 2 / 3;
+    grid-row: 1 / 1;
+}
+
+#stat-sliders {
+    grid-column: 3 / 4;
+    grid-row: 1 / 1;
 }
 
