@@ -1,0 +1,99 @@
+#scatterplot {
+    padding: 25px;
+    font-family: 'Roboto', sans-serif;
+}
+
+circle {
+    stroke: gray;
+    fill: #d9d9d9;
+    opacity: .8;
+}
+
+circle.selected {
+    stroke: black;
+    stroke-width: 2px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.axis-label {
+    font-size: 11px;
+    fill: black;
+}
+
+.chart-tooltip {
+    position: absolute;
+    text-align: center;
+    min-width: 60px;
+    height: 18px;
+    padding: 2px;
+    background: white;
+    stroke: gray;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.chart-tooltip h2 {
+    margin: auto;
+    font: 14px sans-serif;
+    font-weight: bold;
+}
+
+/* Legend */
+.circle-legend {
+    width: 200px;
+    height: 120px;
+    padding-right: 20px;
+    margin: auto;
+    display: inline-block;
+    float: right;
+}
+
+.circle-legend svg {
+    width: 100%;
+    height: 90%;
+}
+
+.circle-legend text {
+    font-size: 11px;
+}
+
+.circle-legend .label {
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: middle;
+}
+
+.circle-legend .subLabel {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* Dropdown */
+div.dropdown-wrapper {
+    display: flex;
+    margin: 0 auto;
+    padding: 2px;
+    justify-content: space-evenly;
+}
+
+.dropdown-panel {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.dropdown-content {
+    text-align: left;
+}
+.y-label,
+.x-label,
+.c-label {
+    width: 1%7;
+    display: inline-block;
+    margin-bottom: 5px;
+}

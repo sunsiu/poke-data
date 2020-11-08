@@ -12,6 +12,10 @@ class Infocard {
             type: 'radar',
             data: {
                 labels: this.statNames,
+                datasets: [{
+                    data: [],
+                    backgroundColor: 'gray'
+                }]
             },
             options: {
                 legend: {
@@ -94,10 +98,8 @@ class Infocard {
     }
 
     drawStats(stats, type) {
-        this.chart.data.datasets = [{
-                data: stats,
-                backgroundColor: `${this.typeColorScale(type)}`,
-            }]
+        this.chart.data.datasets[0].data = stats
+        this.chart.data.datasets[0].backgroundColor = `${this.typeColorScale(type)}`
         this.chart.update();
     }
 
@@ -115,9 +117,6 @@ class Infocard {
         if (height == 0) {
             offset = 250;
         }
-        // else if (height == 1) {
-        //     offset = 60;
-        // }
         else {
             offset = 30;
         }

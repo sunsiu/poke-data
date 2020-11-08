@@ -35,12 +35,12 @@ body {
     color: white;
 }
 
-#dataset-selector {
+select {
     width: auto;
     display: inline-block;
-    border: none;
+    border: .5px solid black;
     border-radius: 3px;
-    padding: 10px;
+    padding: 5px;
     padding-right: 20px;
 }
 
@@ -68,12 +68,12 @@ body {
 .item-infocard {
     grid-column: 1/2;
     grid-row: 3/6;
-    padding-left: 50px;
 }
  
 .item-scatterplot {
     grid-column: 1/1;
     grid-row: 6/10;
+    text-align: center;
 }
  
 .item-stats {
