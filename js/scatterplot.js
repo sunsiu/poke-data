@@ -1,7 +1,8 @@
 class Scatterplot {
-    constructor(data, updateInfocard) {
+    constructor(data, updateInfocard, updateTable) {
         this.data = data;
         this.updateInfocard = updateInfocard;
+        this.updateTable = updateTable;
         this.margin = 25;
         this.height = 500;
         this.width = 820;
@@ -55,7 +56,8 @@ class Scatterplot {
             .append('svg').classed('plot-svg', true)
             .attr("width", this.width + this.margin + this.margin)
             .attr("height", this.height + this.margin + this.margin);
-
+        
+        this.drawBrush();
         let svgGroup = d3.select('#chart-view').select('.plot-svg').append('g').classed('wrapper-group', true);
 
         svgGroup.append('g')
@@ -119,42 +121,105 @@ class Scatterplot {
         // Borrow from HW 4 - END
     }
 
+    drawBrush() {
+        // Transform(margin, margin) if box is off
+        let brushGroup = d3.select('.plot-svg')
+            .append('g')
+            .classed("brush", true)
+            .on("mousedown", () => {
+                this.clearSelected();
+                this.clearBrush();
+            })
+
+        brushGroup.append("rect")
+            .style("fill", "none")
+
+        let that = this;
+        let newData;
+        this.brush = d3.brush().extent([[this.margin * 2, (this.margin * 2) - 15], [this.width + 15, this.height]])
+            .on("start", () => {})
+            .on("brush", function () {
+                const selection = d3.brushSelection(this);
+                let selectedIndices = [];
+                if (selection) {
+                    const [[left, top], [right, bottom]] = selection;
+                    that.data.forEach((d, i) => {
+                        let [x, y] = [that.xScale(d[that.xIndicator]), that.yScale(d[that.yIndicator])]
+                        if (
+                            x >= left &&
+                            x <= right &&
+                            y >= top &&
+                            y <= bottom
+                        ) {
+                            selectedIndices.push(i);
+                        }
+                    });
+                }
+
+                let circles = d3.select("#scatterplot")
+                    .selectAll("circle")
+                    .classed("blurred", true);
+
+                newData = that.data;
+                if (selectedIndices.length > 0) {
+                    circles
+                        .filter((_, i) => {
+                            return selectedIndices.includes(i);
+                        })
+                        .classed("blurred", false);
+                    newData = that.data.filter((_, i) => selectedIndices.includes(i))
+                }
+            })
+            .on("end", function() {
+                d3.select("#scatterplot")
+                    .selectAll("circle")
+                    .classed("blurred", false);
+                that.updateTable(newData);
+            })
+        brushGroup.call(this.brush);
+    }
+
+    clearBrush() {
+        this.brush.clear(d3.select(".brush"));
+        this.updateTable(this.data);
+    }
+
     updatePlot(data, xIndicator, yIndicator, circleSizeIndicator) {
         this.xIndicator = xIndicator;
         this.yIndicator = yIndicator;
         this.circleSizeIndicator = circleSizeIndicator;
         this.data = data;
 
-        const xScale = d3.scaleLinear()
+        this.xScale = d3.scaleLinear()
             .domain([0, d3.max(data, d => d[xIndicator])])
             .range([this.margin * 2, this.width])
 
-        const yScale = d3.scaleLinear()
+        this.yScale = d3.scaleLinear()
             .domain([0, d3.max(data, d => d[yIndicator])])
             .range([this.height, this.margin*2])
 
         const circleMin = d3.min(data, d => d[circleSizeIndicator]);
         const circleMax = d3.max(data, d => d[circleSizeIndicator]);
-        const circleScale = d3.scaleLinear()
+        this.circleScale = d3.scaleLinear()
             .domain([circleMin, circleMax])
             .range([3, 15])
 
         let that = this;
         d3.select('#scatterplot')
             .selectAll('circle')
-            .data(data)
+            .data(this.data)
             .join("circle")
-            .attr("id", d => d.pokedex_number + "-circle")
-            .attr("cx", d => xScale(d[xIndicator]))
-            .attr("cy", d => yScale(d[yIndicator]))
-            .attr("r", d => circleScale(d[circleSizeIndicator]))
-            .attr("class", d => `${d.type1}-type`)
-            .on("mouseup", function(d) {
+            .attr("id", (d, i) => d.pokedex_number + "-circle")
+            .attr("cx", d => this.xScale(d[xIndicator]))
+            .attr("cy", d => this.yScale(d[yIndicator]))
+            .attr("r", d => this.circleScale(d[circleSizeIndicator]))
+            .attr("class", (d, i) => `${d.type1}-type`)
+            .on("mouseup", function(d, i) {
                 that.clearSelected();
                 d3.select(this).classed("selected", true)
                 that.updateInfocard(d);
             })
-            .on("mouseover", function(d) {
+            .on("mouseover", function(d, i) {
                 d3.select(".chart-tooltip")
                     .style("left", `${d3.event.pageX}px`)
                     .style("top", `${d3.event.pageY - 15}px`)
@@ -167,15 +232,17 @@ class Scatterplot {
                     .style("opacity", "0")
             })
 
+        let xLabel = this.indicators.filter(d => d.indicator === xIndicator)[0]
         let xAxis = d3.select('#x-axis');
-        xAxis.call(d3.axisBottom(xScale).ticks(10));
+        xAxis.call(d3.axisBottom(this.xScale).ticks(10));
         xAxis.select('text')
-             .text(xIndicator.toUpperCase());
+             .text(xLabel.label);
        
+        let yLabel = this.indicators.filter(d => d.indicator === yIndicator)[0]
         let yAxis = d3.select('#y-axis');
-        yAxis.call(d3.axisLeft(yScale).ticks(10));
+        yAxis.call(d3.axisLeft(this.yScale).ticks(10));
         yAxis.select('text')
-             .text(yIndicator.toUpperCase());
+             .text(yLabel.label);
 
         this.drawLegend(circleMin, circleMax);
         this.drawDropdowns(xIndicator, yIndicator, circleSizeIndicator);
@@ -214,6 +281,7 @@ class Scatterplot {
             let xValue = this.options[this.selectedIndex].value;
             let yValue = dropY.node().value;
             let cValue = dropC.node().value;
+            that.clearBrush();
             that.updatePlot(that.data, xValue, yValue, cValue);
         });
 
@@ -235,6 +303,7 @@ class Scatterplot {
             let yValue = this.options[this.selectedIndex].value;
             let xValue = dropX.node().value;
             let cValue = dropC.node().value;
+            that.clearBrush();
             that.updatePlot(that.data, xValue, yValue, cValue);
         });
 
@@ -255,6 +324,7 @@ class Scatterplot {
             let cValue = this.options[this.selectedIndex].value;
             let xValue = dropX.node().value;
             let yValue = dropY.node().value;
+            that.clearBrush();
             that.updatePlot(that.data, xValue, yValue, cValue);
         });
     }

@@ -3,6 +3,11 @@
     font-family: 'Roboto', sans-serif;
 }
 
+.wrapper-group {
+    position: relative;
+    z-index: 50;
+}
+
 circle {
     stroke: gray;
     fill: #d9d9d9;
@@ -97,3 +102,8 @@ div.dropdown-wrapper {
     display: inline-block;
     margin-bottom: 5px;
 }
+
+/* Brush */
+.blurred {
+    fill: gainsboro !important;
+  }
