@@ -6,10 +6,11 @@ class Filter {
 }
 
 class Table {
-    constructor(data, updateInfocard) {
+    constructor(data, updateInfocard, updateScatterplot) {
         this.data = data;
         this.filteredData = [...this.data];
         this.updateInfocard = updateInfocard;
+        this.updateScatterplot = updateScatterplot;
         this.visWidth = 70;
         this.visHeight = 25;
         this.currentFilters = [];
@@ -285,7 +286,7 @@ class Table {
         var i;
         for (i = 0; i < this.currentFilters.length; i++) {
             if (this.currentFilters[i].value == filter.value && this.currentFilters[i].label == filter.label) {
-                let removed = this.currentFilters.splice(i, 1);
+                this.currentFilters.splice(i, 1);
                 break;
             }
         }
@@ -307,6 +308,8 @@ class Table {
                 this.filteredData = this.filteredData.filter(d => d.name.toLowerCase().includes(f.value));
             }
         }
+        
+        this.updateScatterplot(this.filteredData);
     }
 
     /**
