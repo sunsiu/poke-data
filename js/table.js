@@ -27,7 +27,9 @@ class Table {
         this.drawTable();
     }
 
-    drawTable(data = this.data) {
+    drawTable() {
+        let data = this.currentFilters.length > 0 ? this.filteredData : this.data;
+
         this.updateHeaders();
         let rows = d3.select("#table-body")
             .selectAll("tr")
@@ -95,6 +97,7 @@ class Table {
 
     updateData(newData) {
         this.data = newData;
+        this.updateCurrentFilters();
         this.drawTable();
     }
 
@@ -253,7 +256,7 @@ class Table {
                     if (!this.hasFilter(newFilter)) {  
                         this.currentFilters.push(new Filter("type", d));
                         this.updateCurrentFilters();
-                        this.drawTable(this.filteredData);
+                        this.drawTable();
                         this.drawCurrentFilter(newFilter);
                     }
                 }));
@@ -294,7 +297,7 @@ class Table {
         this.updateCurrentFilters();
 
         d3.select("#" + filter.value + "-curr-filter").remove();
-        this.drawTable(this.filteredData);
+        this.drawTable();
     }
 
     updateCurrentFilters() {
@@ -308,7 +311,7 @@ class Table {
                 this.filteredData = this.filteredData.filter(d => d.name.toLowerCase().includes(f.value));
             }
         }
-        
+
         this.updateScatterplot(this.filteredData);
     }
 
@@ -337,8 +340,7 @@ class Table {
             this.currentFilters[searchIdx].value = searchVal;
         }
         this.updateCurrentFilters();
-        
-        this.drawTable(this.filteredData);
+        this.drawTable();
     }
 
     hasFilter(filter) {

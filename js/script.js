@@ -15,8 +15,7 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
     }
 
     function updateAllData(dataset) {
-        table.updateData(dataset);
-        scatterplot.updateData(dataset);
+        table.updateData(dataset);  // Updating scatterplot with (potentially) filtered dataset in table update
         infocard.updateSelected(dataset[3]);
     }
 
