@@ -1,9 +1,18 @@
+class Filter {
+    constructor(label, value) {
+        this.label = label;
+        this.value = value;
+    }
+}
+
 class Table {
     constructor(data, updateInfocard) {
         this.data = data;
+        this.filteredData = [...this.data];
         this.updateInfocard = updateInfocard;
         this.visWidth = 84;
         this.visHeight = 25;
+        this.currentFilters = [];
         this.colKeys = ["pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", "sp_attack", "sp_defense", "speed"];
         this.visLabels = this.colKeys.slice(4);
         this.allTypes = ['water', 'normal', 'grass', 'bug', 'fire', 'psychic', 'rock', 'electric', 'ground', 'dark', 'poison', 'fighting',
@@ -17,11 +26,14 @@ class Table {
         this.drawTable();
     }
 
-    drawTable() {
+    drawTable(data = this.data) {
+        if (this.currentFilters.length > 0) {
+            // Filter data again
+        }
         this.updateHeaders();
         let rows = d3.select("#table-body")
             .selectAll("tr")
-            .data(this.data)
+            .data(data)
             .join("tr")
             .attr("class", "row");
 
@@ -30,10 +42,12 @@ class Table {
         let tds = rows.selectAll("td")
             .data(this.getCellData)
             .join("td");
+
         tds.filter(d => !d.vis && !d.isType)
             .text(d => d.val);
-        let type_imgs = tds.filter(d => !d.vis && d.isType).text(d => d.val ? "" : "--");
-        type_imgs
+
+        let typeImgs = tds.filter(d => !d.vis && d.isType).text(d => d.val ? "" : "--");
+        typeImgs
             .selectAll("img")
             .data(d => [d])
             .join("img")
@@ -226,12 +240,48 @@ class Table {
 
     drawFilters() {
         let filterSel = d3.select("#filters");
+
+        let searchBar = d3.select("#search-bar");
+        searchBar.on("keyup", () => this.onSearchPokemon());
+
         let imgGroup = filterSel.select("#type-buttons");
         this.allTypes.forEach(d => 
             imgGroup
                 .append("img")
                 .attr("src", "sprites/types/" + d + ".png")
-                .attr("class", "filter-type-button"));
+                .attr("class", "filter-type-button")
+                .on("click", () => {
+                    let newFilter = new Filter("type", d);
+                    if (!this.hasFilter(newFilter)) {  
+                        this.currentFilters.push(new Filter("type", d));
+                        this.filteredData = this.filteredData.filter(f => f.type1 == d  || f.type2 == d);
+                        this.drawTable(this.filteredData);
+                        this.drawCurrentFilter(newFilter);
+                    }
+                }));
+    }
+
+    drawCurrentFilter(filter) {
+        let currFilterDiv = d3.select("#current-filters")
+            .append("svg")
+            .attr("id", filter.value + "-curr-filter");
+
+        currFilterDiv.append("rect")
+            .attr("class", "curr-filter");
+        currFilterDiv.append("image")
+            .attr("href", filter.label == "type" ? "sprites/types/" + filter.value + ".png" : null)
+            .attr("height", "20px")
+            .attr("width", "60px");
+        currFilterDiv.append("image")
+            .attr("href", "sprites/x.png")
+            .attr("height", "15px")
+            .attr("width", "15px")
+            .attr("x", "63px")
+            .attr("y", "3px");
+    }
+
+    removeFilter(filter) {
+
     }
 
     /**
@@ -243,5 +293,22 @@ class Table {
     tooltipRender(data) {
         let text = "<h2>" + data.stat.toUpperCase() + ": " + data.val + "</h2>";
         return text;
+    }
+
+    onSearchPokemon() {
+        let searchBar = d3.select("#search-bar");
+        let filter = searchBar.property("value").toLowerCase();
+        this.filteredData = this.data.filter(d => d.name.toLowerCase().includes(filter));
+        this.drawTable(this.filteredData);
+    }
+
+    hasFilter(filter) {
+        var f;
+        for (f of this.currentFilters) {
+            if (f.label == filter.label && f.value == filter.value) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -51,9 +51,9 @@ body {
     grid-row-gap: 10px;
 }
 
-[class^="item-"] {
+/* [class^="item-"] {
     border: 2px solid #eb6123;
-}
+} */
 
 .item-title {
     grid-column: 1/ 3;
