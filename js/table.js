@@ -10,7 +10,7 @@ class Table {
         this.data = data;
         this.filteredData = [...this.data];
         this.updateInfocard = updateInfocard;
-        this.visWidth = 84;
+        this.visWidth = 70;
         this.visHeight = 25;
         this.currentFilters = [];
         this.colKeys = ["pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", "sp_attack", "sp_defense", "speed"];

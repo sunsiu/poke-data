@@ -47,7 +47,7 @@ select {
 .grid-container {
     display: grid;
     grid-template-columns: auto auto;
-    grid-column-gap: 50px;
+    grid-column-gap: 20px;
     grid-row-gap: 10px;
 }
 
