@@ -6,16 +6,18 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
     console.log(pokeData)
     console.log(evolveData)
     
-    let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree, getPokemon);
     let table = new Table(pokeData, updateInfocard, typeRender);
+    let scatterplot = new Scatterplot(pokeData, updateInfocard);
+    let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree, getPokemon);
     
     function updateInfocard(data) {
         infocard.updateSelected(data);
     }
 
     function updateAllData(dataset) {
-        infocard.updateSelected(dataset[3]);
         table.updateData(dataset);
+        scatterplot.updateData(dataset);
+        infocard.updateSelected(dataset[3]);
     }
     setupBanner(pokeData, updateAllData);
 });
