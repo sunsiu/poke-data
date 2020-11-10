@@ -27,9 +27,6 @@ class Table {
     }
 
     drawTable(data = this.data) {
-        if (this.currentFilters.length > 0) {
-            // Filter data again
-        }
         this.updateHeaders();
         let rows = d3.select("#table-body")
             .selectAll("tr")
@@ -254,7 +251,7 @@ class Table {
                     let newFilter = new Filter("type", d);
                     if (!this.hasFilter(newFilter)) {  
                         this.currentFilters.push(new Filter("type", d));
-                        this.filteredData = this.filteredData.filter(f => f.type1 == d  || f.type2 == d);
+                        this.updateCurrentFilters();
                         this.drawTable(this.filteredData);
                         this.drawCurrentFilter(newFilter);
                     }
@@ -264,7 +261,11 @@ class Table {
     drawCurrentFilter(filter) {
         let currFilterDiv = d3.select("#current-filters")
             .append("svg")
-            .attr("id", filter.value + "-curr-filter");
+            .attr("id", filter.value + "-curr-filter")
+            .on("click", () => {
+                let selected = new Filter("type", filter.value);
+                this.removeFilter(selected);
+            });
 
         currFilterDiv.append("rect")
             .attr("class", "curr-filter");
@@ -273,7 +274,7 @@ class Table {
             .attr("height", "20px")
             .attr("width", "60px");
         currFilterDiv.append("image")
-            .attr("href", "sprites/x.png")
+            .attr("href", "assets/x.png")
             .attr("height", "15px")
             .attr("width", "15px")
             .attr("x", "63px")
@@ -281,7 +282,31 @@ class Table {
     }
 
     removeFilter(filter) {
+        var i;
+        for (i = 0; i < this.currentFilters.length; i++) {
+            if (this.currentFilters[i].value == filter.value && this.currentFilters[i].label == filter.label) {
+                let removed = this.currentFilters.splice(i, 1);
+                break;
+            }
+        }
+        
+        this.updateCurrentFilters();
 
+        d3.select("#" + filter.value + "-curr-filter").remove();
+        this.drawTable(this.filteredData);
+    }
+
+    updateCurrentFilters() {
+        this.filteredData = [...this.data];
+        var f;
+        for (f of this.currentFilters) {
+            if (f.label == "type") {
+                this.filteredData = this.filteredData.filter(d => d.type1 == f.value || d.type2 == f.value);
+            }
+            else if (f.label == "search") {
+                this.filteredData = this.filteredData.filter(d => d.name.toLowerCase().includes(f.value));
+            }
+        }
     }
 
     /**
@@ -297,8 +322,19 @@ class Table {
 
     onSearchPokemon() {
         let searchBar = d3.select("#search-bar");
-        let filter = searchBar.property("value").toLowerCase();
-        this.filteredData = this.data.filter(d => d.name.toLowerCase().includes(filter));
+        let searchVal = searchBar.property("value").toLowerCase();
+
+        // Update current filters with searchbar value
+        let searchIdx = this.currentFilters.findIndex(f => f.label == "search");
+        if (searchIdx < 0) {
+            let newFilter = new Filter("search", searchVal);
+            this.currentFilters.push(newFilter)
+        }
+        else {
+            this.currentFilters[searchIdx].value = searchVal;
+        }
+        this.updateCurrentFilters();
+        
         this.drawTable(this.filteredData);
     }
 
