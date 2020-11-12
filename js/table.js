@@ -245,6 +245,7 @@ class Table {
         let searchBar = d3.select("#search-bar");
         searchBar.on("keyup", () => this.onSearchPokemon());
 
+        // Type filter buttons
         let imgGroup = filterSel.select("#type-buttons");
         this.allTypes.forEach(d => 
             imgGroup
@@ -254,12 +255,47 @@ class Table {
                 .on("click", () => {
                     let newFilter = new Filter("type", d);
                     if (!this.hasFilter(newFilter)) {  
-                        this.currentFilters.push(new Filter("type", d));
+                        this.currentFilters.push(newFilter);
                         this.updateCurrentFilters();
                         this.drawTable();
                         this.drawCurrentFilter(newFilter);
                     }
                 }));
+        
+        // Stat sliders
+        var label;
+        let that = this;
+        for (label of this.visLabels) {
+            let minVal = d3.min(this.data, d => d[label]);
+            let maxVal = d3.max(this.data, d => d[label])
+            d3.select("#" + label + "-label")
+                .property("value", minVal + " - " + maxVal);
+
+            $( "#" + label + "-range" ).slider({
+                range: true,
+                min: minVal,
+                max: maxVal,
+                values: [minVal, maxVal],
+                slide: function(event, ui) {
+                    let statKey = $(this).attr("id").split("-")[0];
+                    d3.select("#" + statKey + "-label")
+                        .property("value", ui.values[0] + " - " + ui.values[1]);
+                },
+                stop: function(event, ui) {
+                    let statKey = $(this).attr("id").split("-")[0];
+                    let filter = new Filter(statKey, [ui.values[0], ui.values[1]]);
+                    if (!that.hasFilter(filter)) {  
+                        that.currentFilters.push(filter);
+                    }
+                    else {
+                        let i = that.currentFilters.findIndex(f => f.label == statKey);
+                        that.currentFilters[i].value = filter.value;
+                    }
+                    that.updateCurrentFilters();
+                    that.drawTable();
+                }
+            });
+        }
     }
 
     drawCurrentFilter(filter) {
@@ -308,7 +344,10 @@ class Table {
                 this.filteredData = this.filteredData.filter(d => d.type1 == f.value || d.type2 == f.value);
             }
             else if (f.label == "search") {
-                this.filteredData = this.filteredData.filter(d => d.name.toLowerCase().includes(f.value));
+                this.filteredData = this.filteredData.filter(d => d.name.toLowerCase().includes(f.value) || d.pokedex_number == f.value);
+            }
+            else {
+                this.filteredData = this.filteredData.filter(d => d[f.label] >= f.value[0] && d[f.label] <= f.value[1]);
             }
         }
 
@@ -346,6 +385,9 @@ class Table {
     hasFilter(filter) {
         var f;
         for (f of this.currentFilters) {
+            if (f.value instanceof Array && f.label == filter.label) {
+                return true;
+            }
             if (f.label == filter.label && f.value == filter.value) {
                 return true;
             }
