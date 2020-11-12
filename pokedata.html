@@ -10,10 +10,13 @@
     <link rel="stylesheet" href="css/table.css"/>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://d3js.org/d3.v5.js"></script>
     <script src="https://d3js.org/d3-array.v2.min.js"></script>
     <script src="https://d3js.org/d3-force.v2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.0"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -39,6 +42,52 @@
         </div>
     </div>
     <div id="table-wrapper" class="item-table">
+        <div id="filter-wrapper">
+            <button id="exp-button">Filters <i class="fas fa-sort-down"></i></button>
+            <div id="current-filters"></div>
+            <div id="filters" class="content">
+                <div id="type-buttons"></div>
+                <div id="stat-sliders1">
+                    <div>
+                        <label for="hp-label">HP:</label>
+                        <input type="text" id="hp-label" readonly/>
+                    </div>
+                    <div id="hp-range"></div>
+                    <div>
+                        <label for="attack-label">Attack:</label>
+                        <input type="text" id="attack-label" readonly/>
+                    </div>
+                    <div id="attack-range"></div>
+                    <div>
+                        <label for="defense-label">Defense:</label>
+                        <input type="text" id="defense-label" readonly/>
+                    </div>
+                    <div id="defense-range"></div>
+                </div>
+
+                <div id="stat-sliders2">
+                    <div>
+                        <label for="sp_attack-label">Special Attack:</label>
+                        <input type="text" id="sp_attack-label" readonly/>
+                    </div>
+                    <div id="sp_attack-range"></div>
+                    <div>
+                        <label for="sp_defense-label">Special Defense:</label>
+                        <input type="text" id="sp_defense-label" readonly/>
+                    </div>
+                    <div id="sp_defense-range"></div>
+                    <div>
+                        <label for="speed-label">Speed:</label>
+                        <input type="text" id="speed-label" readonly/>
+                    </div>
+                    <div id="speed-range"></div>
+                </div>
+            </div>
+        </div>
+        <div id="search-bar-content">
+            <i class="fa fa-search icon"></i>
+            <input type="text" id="search-bar" placeholder="Search for pokemon">
+        </div>
         <table id="table">
             <thead>
             <tr id="headers">
