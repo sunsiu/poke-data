@@ -6,3 +6,4 @@
 -Fixed error for selecting multiple types on table
 -Add margin to table names
 -Change stats colors to encode stats and not types
+-Make stats breakdown distribution match the filtered pokemon
