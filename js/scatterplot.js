@@ -5,7 +5,7 @@ class Scatterplot {
         this.updateTable = updateTable;
         this.margin = 25;
         this.height = 500;
-        this.width = 820;
+        this.width = 700;
 
         this.indicators = [{
                 indicator: "hp",
@@ -174,14 +174,14 @@ class Scatterplot {
                 d3.select("#scatterplot")
                     .selectAll("circle")
                     .classed("blurred", false);
-                that.updateTable(newData);
+                that.updateTable(newData, true);
             })
         brushGroup.call(this.brush);
     }
 
     clearBrush() {
         this.brush.clear(d3.select(".brush"));
-        this.updateTable(this.data);
+        this.updateTable(this.data, true);
     }
 
     updatePlot(data, xIndicator, yIndicator, circleSizeIndicator) {

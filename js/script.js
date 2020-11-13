@@ -14,8 +14,8 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
         infocard.updateSelected(data);
     }
 
-    function updateTable(data) {
-        table.updateData(data);
+    function updateTable(data, isBrushed) {
+        table.updateData(data, isBrushed);
     }
 
     function updateAllData(dataset) {

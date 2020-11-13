@@ -95,9 +95,11 @@ class Table {
         return cells;
     }
 
-    updateData(newData) {
+    updateData(newData, isBrushed=false) {
         this.data = newData;
-        this.updateCurrentFilters();
+        if(!isBrushed) {
+            this.updateCurrentFilters();
+        }
         this.drawTable();
     }
 
