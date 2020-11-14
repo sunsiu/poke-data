@@ -1,8 +1,8 @@
 # poke-data
 
-Run by cd'ing to this directory and running
-`python3 -m http.server 8080`
-Then going to localhost:8080 and selecting pokedata.html
+Run by cd'ing to this directory and running<br>
+`python3 -m http.server 8080`<br>
+Then going to localhost:8080 and selecting pokedata.html<br>
 
 
 #TODO
