@@ -5,7 +5,7 @@ Run by cd'ing to this directory and running<br>
 Then going to localhost:8080 and selecting pokedata.html<br>
 
 
-#TODO
+# TODO
 -Highlight row on selection<br>
 -Highlight bubble on selection<br>
 -Fixed error for selecting multiple types on table<br>
