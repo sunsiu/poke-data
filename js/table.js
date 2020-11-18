@@ -69,9 +69,6 @@ class Table {
         if(d !== null) {
             d3.selectAll(".row").filter((_, i) => i == d.pokedex_number-1).classed("highlight", true);
             var rows = document.querySelectorAll('#table tr');
-
-            // line is zero-based
-            // line is the row number that you want to see into view after scroll    
             rows[d.pokedex_number-1].scrollIntoView({
                 behavior: 'auto',
                 block: 'center',
