@@ -184,6 +184,12 @@ class Scatterplot {
         this.updateTable(this.data, true);
     }
 
+    updateSelected(selected) {
+        this.clearSelected();
+        d3.select(`#circle-${selected.pokedex_number}`)
+            .classed("selected", true)
+    }
+
     updatePlot(data, xIndicator, yIndicator, circleSizeIndicator) {
         this.xIndicator = xIndicator;
         this.yIndicator = yIndicator;
@@ -204,20 +210,18 @@ class Scatterplot {
             .domain([circleMin, circleMax])
             .range([3, 15])
 
-        let that = this;
         d3.select('#scatterplot')
             .selectAll('circle')
             .data(this.data)
             .join("circle")
-            .attr("id", (d, i) => d.pokedex_number + "-circle")
+            .attr("id", (d, i) => "circle-" + d.pokedex_number )
             .attr("cx", d => this.xScale(d[xIndicator]))
             .attr("cy", d => this.yScale(d[yIndicator]))
             .attr("r", d => this.circleScale(d[circleSizeIndicator]))
             .attr("class", (d, i) => `${d.type1}-type`)
-            .on("mouseup", function(d, i) {
-                that.clearSelected();
-                d3.select(this).classed("selected", true)
-                that.updateInfocard(d);
+            .on("mouseup", (d, i) => {
+                this.updateSelected(d);
+                this.updateInfocard(d);
             })
             .on("mouseover", function(d, i) {
                 d3.select(".chart-tooltip")

@@ -6,11 +6,12 @@ class Filter {
 }
 
 class Table {
-    constructor(data, updateInfocard, updateScatterplot) {
+    constructor(data, updateInfocard, updateScatterplot, updateSelectedCircle) {
         this.data = data;
         this.filteredData = [...this.data];
         this.updateInfocard = updateInfocard;
         this.updateScatterplot = updateScatterplot;
+        this.updateSelectedCircle = updateSelectedCircle;
         this.visWidth = 70;
         this.visHeight = 25;
         this.currentFilters = [];
@@ -37,7 +38,13 @@ class Table {
             .join("tr")
             .attr("class", "row");
 
-        rows.on("click", d => this.updateInfocard(d));
+        let that = this;
+        rows.on("click", function(d) {
+            that.clearSelected();
+            d3.select(this).classed("highlight", true);
+            that.updateInfocard(d);
+            that.updateSelectedCircle(d);
+        });
 
         let tds = rows.selectAll("td")
             .data(this.getCellData)
@@ -56,6 +63,10 @@ class Table {
 
         let statsSelect = tds.filter(d => d.vis);
         this.makeStatsVis(statsSelect);
+    }
+
+    clearSelected() {
+        d3.selectAll(".row").classed("highlight", false);
     }
 
     getCellData(d) {
