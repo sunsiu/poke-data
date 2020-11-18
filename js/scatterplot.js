@@ -1,8 +1,8 @@
 class Scatterplot {
-    constructor(data, updateInfocard, updateTable) {
+    constructor(data, updateInfocard, updateSelectedRow) {
         this.data = data;
         this.updateInfocard = updateInfocard;
-        this.updateTable = updateTable;
+        this.updateSelectedRow = updateSelectedRow;
         this.margin = 25;
         this.height = 500;
         this.width = 700;
@@ -45,6 +45,7 @@ class Scatterplot {
             .append('div').attr('id', 'chart-view')
             .on("mousedown", () => {
                 this.clearSelected();
+                this.updateSelectedRow(null);
             });
     
         d3.select('#chart-view')
@@ -57,7 +58,6 @@ class Scatterplot {
             .attr("width", this.width + this.margin + this.margin)
             .attr("height", this.height + this.margin + this.margin);
         
-        this.drawBrush();
         let svgGroup = d3.select('#chart-view').select('.plot-svg').append('g').classed('wrapper-group', true);
 
         svgGroup.append('g')
@@ -121,73 +121,12 @@ class Scatterplot {
         // Borrow from HW 4 - END
     }
 
-    drawBrush() {
-        // Transform(margin, margin) if box is off
-        let brushGroup = d3.select('.plot-svg')
-            .append('g')
-            .classed("brush", true)
-            .on("mousedown", () => {
-                this.clearSelected();
-                this.clearBrush();
-            })
-
-        brushGroup.append("rect")
-            .style("fill", "none")
-
-        let that = this;
-        let newData;
-        this.brush = d3.brush().extent([[this.margin * 2, (this.margin * 2) - 15], [this.width + 15, this.height]])
-            .on("start", () => {})
-            .on("brush", function () {
-                const selection = d3.brushSelection(this);
-                let selectedIndices = [];
-                if (selection) {
-                    const [[left, top], [right, bottom]] = selection;
-                    that.data.forEach((d, i) => {
-                        let [x, y] = [that.xScale(d[that.xIndicator]), that.yScale(d[that.yIndicator])]
-                        if (
-                            x >= left &&
-                            x <= right &&
-                            y >= top &&
-                            y <= bottom
-                        ) {
-                            selectedIndices.push(i);
-                        }
-                    });
-                }
-
-                let circles = d3.select("#scatterplot")
-                    .selectAll("circle")
-                    .classed("blurred", true);
-
-                newData = that.data;
-                if (selectedIndices.length > 0) {
-                    circles
-                        .filter((_, i) => {
-                            return selectedIndices.includes(i);
-                        })
-                        .classed("blurred", false);
-                    newData = that.data.filter((_, i) => selectedIndices.includes(i))
-                }
-            })
-            .on("end", function() {
-                d3.select("#scatterplot")
-                    .selectAll("circle")
-                    .classed("blurred", false);
-                that.updateTable(newData, true);
-            })
-        brushGroup.call(this.brush);
-    }
-
-    clearBrush() {
-        this.brush.clear(d3.select(".brush"));
-        this.updateTable(this.data, true);
-    }
-
     updateSelected(selected) {
         this.clearSelected();
+        d3.selectAll("circle").classed("blurred", true)
         d3.select(`#circle-${selected.pokedex_number}`)
-            .classed("selected", true)
+            .classed("blurred", false)
+            .classed("selected", true);
     }
 
     updatePlot(data, xIndicator, yIndicator, circleSizeIndicator) {
@@ -221,6 +160,7 @@ class Scatterplot {
             .attr("class", (d, i) => `${d.type1}-type`)
             .on("mouseup", (d, i) => {
                 this.updateSelected(d);
+                this.updateSelectedRow(d);
                 this.updateInfocard(d);
             })
             .on("mouseover", function(d, i) {
@@ -258,6 +198,7 @@ class Scatterplot {
 
     clearSelected() {
         d3.selectAll("circle").classed("selected", false);
+        d3.selectAll("circle").classed("blurred", false);
     }
 
     /**
@@ -285,7 +226,6 @@ class Scatterplot {
             let xValue = this.options[this.selectedIndex].value;
             let yValue = dropY.node().value;
             let cValue = dropC.node().value;
-            that.clearBrush();
             that.updatePlot(that.data, xValue, yValue, cValue);
         });
 
@@ -307,7 +247,6 @@ class Scatterplot {
             let yValue = this.options[this.selectedIndex].value;
             let xValue = dropX.node().value;
             let cValue = dropC.node().value;
-            that.clearBrush();
             that.updatePlot(that.data, xValue, yValue, cValue);
         });
 
@@ -328,7 +267,6 @@ class Scatterplot {
             let cValue = this.options[this.selectedIndex].value;
             let xValue = dropX.node().value;
             let yValue = dropY.node().value;
-            that.clearBrush();
             that.updatePlot(that.data, xValue, yValue, cValue);
         });
     }

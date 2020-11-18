@@ -105,5 +105,6 @@ div.dropdown-wrapper {
 
 /* Brush */
 .blurred {
-    fill: gainsboro !important;
+    /* fill: gainsboro !important; */
+    opacity: .2;
   }
