@@ -13,6 +13,10 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
         table.updateData(data, isBrushed);
     }
 
+    function updateSelectedRow(data) {
+        table.updateSelected(data);
+    }
+
     function updateAllData(dataset) {
         table.updateData(dataset);  // Updating scatterplot with (potentially) filtered dataset in table update
         infocard.updateSelected(dataset[3]);
@@ -27,8 +31,9 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
     }
     
     let table = new Table(pokeData, updateInfocard, updateScatterplot, updateSelectedCircle);
-    let scatterplot = new Scatterplot(pokeData, updateInfocard, updateTable);
-    let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree, getPokemon);
+    let scatterplot = new Scatterplot(pokeData, updateInfocard, updateTable, updateSelectedRow);
+    let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree,
+         getPokemon, updateSelectedCircle, updateSelectedRow);
     
     setupBanner(pokeData, updateAllData);
 });

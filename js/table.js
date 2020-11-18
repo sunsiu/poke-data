@@ -40,8 +40,7 @@ class Table {
 
         let that = this;
         rows.on("click", function(d) {
-            that.clearSelected();
-            d3.select(this).classed("highlight", true);
+            that.updateSelected(d);
             that.updateInfocard(d);
             that.updateSelectedCircle(d);
         });
@@ -63,6 +62,11 @@ class Table {
 
         let statsSelect = tds.filter(d => d.vis);
         this.makeStatsVis(statsSelect);
+    }
+
+    updateSelected(d) {
+        this.clearSelected();
+        d3.selectAll(".row").filter((_, i) => i == d.pokedex_number-1).classed("highlight", true);
     }
 
     clearSelected() {

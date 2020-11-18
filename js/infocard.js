@@ -1,9 +1,11 @@
 class Infocard {
-    constructor(selected, renderTypes, getEvolutionTree, getPokemon) {
+    constructor(selected, renderTypes, getEvolutionTree, getPokemon, updateSelectedCircle, updateSelectedRow) {
         this.selected = null;
         this.renderTypes = renderTypes;
         this.getEvolutionTree = getEvolutionTree;
         this.getPokemon = getPokemon;
+        this.updateSelectedCircle = updateSelectedCircle;
+        this.updateSelectedRow = updateSelectedRow;
 
         this.statNames = ['HP', 'ATK', 'DEF', 'SPEED', 'SP ATK', 'SP DEF'];
 
@@ -133,6 +135,8 @@ class Infocard {
                 // Remove the "evo-" from the id
                 const selectedId = this.id.slice(4);
                 that.updateSelected(that.getPokemon(+selectedId))
+                that.updateSelectedCircle({pokedex_number: selectedId});
+                that.updateSelectedRow({pokedex_number: selectedId});
             });
 
         // Nodes
