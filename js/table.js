@@ -12,11 +12,16 @@ class Table {
         this.updateInfocard = updateInfocard;
         this.updateScatterplot = updateScatterplot;
         this.updateSelectedCircle = updateSelectedCircle;
-        this.visWidth = 70;
+        this.visWidth = 75;
         this.visHeight = 25;
         this.currentFilters = [];
-        this.colKeys = ["pokedex_number", "name", "type1", "type2", "hp", "attack", "defense", "sp_attack", "sp_defense", "speed"];
+        this.colKeys = ["pokedex_number", "name", "type1", "type2", "attack", "defense", "speed", "hp", "sp_attack", "sp_defense"];
         this.visLabels = this.colKeys.slice(4);
+        this.statColors = d3.scaleOrdinal()
+            .domain(this.visLabels)
+            .range(["#FA6163", "#F47E3E", "#F9C74F", "#90BE6D", "#6DC5AB", "#6687A3"]);
+        // ["#90be6d", "#f9c74f", "#f3722c", "#43aa8b", "#577590", "#ea2223"]
+        // ["#f94144", "#f3722c", "#f9c74f", "#90be6d", "#43aa8b", "#577590"]
         this.allTypes = ['water', 'normal', 'grass', 'bug', 'fire', 'psychic', 'rock', 'electric', 'ground', 'dark', 'poison', 'fighting',
             'dragon', 'ghost', 'ice', 'steel', 'fairy', 'flying']
 
@@ -29,8 +34,7 @@ class Table {
     }
 
     drawTable() {
-        let data = this.currentFilters.length > 0 ? this.filteredData : this.data;
-
+        let data = this.filteredData;
         this.updateHeaders();
         let rows = d3.select("#table-body")
             .selectAll("tr")
@@ -50,6 +54,7 @@ class Table {
             .join("td");
 
         tds.filter(d => !d.vis && !d.isType)
+            .attr("width", d => d.stat == "pokedex_number" ? "30" : "70")
             .text(d => d.val);
 
         let typeImgs = tds.filter(d => !d.vis && d.isType).text(d => d.val ? "" : "--");
@@ -68,12 +73,7 @@ class Table {
         this.clearSelected();
         if(d !== null) {
             d3.selectAll(".row").filter((_, i) => i == d.pokedex_number-1).classed("highlight", true);
-            var rows = document.querySelectorAll('#table tr');
-            rows[d.pokedex_number-1].scrollIntoView({
-                behavior: 'auto',
-                block: 'center',
-            });
-            window.scrollBy(0, -80);
+            
         }
   
     }
@@ -98,13 +98,14 @@ class Table {
                 let statInfo = {
                     vis: false,
                     isType: false,
-                    val: d[key]
+                    val: d[key],
+                    stat: key
                 };
                 cells.push(statInfo);
             }
         });
 
-        let visVals = ['hp', 'attack', 'defense', 'sp_attack', 'sp_defense', 'speed']
+        let visVals = ["attack", "defense", "speed", "hp", "sp_attack", "sp_defense"]
         visVals.forEach(key => {
             let statInfo = {
                 vis: true,
@@ -155,6 +156,25 @@ class Table {
     }
 
     sortData(key, isAsc, func) {
+        this.filteredData.sort((a, b) => {
+            let x = a[key];
+            let y = b[key];
+
+            if (!isAsc) {
+                [x,y] = [y,x];
+            }
+            if (func) {
+                x = func(x);
+                y = func(y);
+            }
+            if (x < y) {
+                return -1;
+            }
+            else if (x > y) {
+                return 1;
+            }
+            return 0;
+        });
         this.data.sort((a, b) => {
             let x = a[key];
             let y = b[key];
@@ -223,7 +243,6 @@ class Table {
         selection.selectAll("rect")
             .data(d => [d])
             .join("rect")
-            .attr("class", d => `${d.type}-type`)
             .attr("width", d => {
                 let scale = d3.scaleLinear()
                     .domain([0, d3.max(this.data, data => data[d.stat])])
@@ -231,6 +250,7 @@ class Table {
                 return scale(d.val)
             })
             .attr("height", this.visHeight)
+            .style("fill", d => this.statColors(d.stat))
             .on("mouseover", function(d) {
                 tooltip.style("opacity", 0.75)
                     .html(that.tooltipRender(d));
