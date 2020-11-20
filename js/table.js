@@ -19,7 +19,7 @@ class Table {
         this.visLabels = this.colKeys.slice(4);
         this.statColors = d3.scaleOrdinal()
             .domain(this.visLabels)
-            .range(["#f94144", "#f3722c", "#f9c74f", "#90be6d", "#43aa8b", "#577590"]);
+            .range(["#FA6163", "#F47E3E", "#F9C74F", "#90BE6D", "#6DC5AB", "#6687A3"]);
         // ["#90be6d", "#f9c74f", "#f3722c", "#43aa8b", "#577590", "#ea2223"]
         // ["#f94144", "#f3722c", "#f9c74f", "#90be6d", "#43aa8b", "#577590"]
         this.allTypes = ['water', 'normal', 'grass', 'bug', 'fire', 'psychic', 'rock', 'electric', 'ground', 'dark', 'poison', 'fighting',
@@ -73,12 +73,7 @@ class Table {
         this.clearSelected();
         if(d !== null) {
             d3.selectAll(".row").filter((_, i) => i == d.pokedex_number-1).classed("highlight", true);
-            var rows = document.querySelectorAll('#table tr');
-            rows[d.pokedex_number-1].scrollIntoView({
-                behavior: 'auto',
-                block: 'center',
-            });
-            window.scrollBy(0, -80);
+            
         }
   
     }
@@ -156,13 +151,31 @@ class Table {
                 this.headerData.forEach(h => h.sorted = false);
                 d.sorted = true;
                 d.ascending = sortAsc;
-                console.log(this.filteredData);
                 this.drawTable();
             });
     }
 
     sortData(key, isAsc, func) {
         this.filteredData.sort((a, b) => {
+            let x = a[key];
+            let y = b[key];
+
+            if (!isAsc) {
+                [x,y] = [y,x];
+            }
+            if (func) {
+                x = func(x);
+                y = func(y);
+            }
+            if (x < y) {
+                return -1;
+            }
+            else if (x > y) {
+                return 1;
+            }
+            return 0;
+        });
+        this.data.sort((a, b) => {
             let x = a[key];
             let y = b[key];
 

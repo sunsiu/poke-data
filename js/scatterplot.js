@@ -164,6 +164,8 @@ class Scatterplot {
                 this.updateInfocard(d);
             })
             .on("mouseover", function(d, i) {
+                d3.select(this)
+                    .classed("selected", true);
                 d3.select(".chart-tooltip")
                     .style("left", `${d3.event.pageX}px`)
                     .style("top", `${d3.event.pageY - 15}px`)
@@ -171,6 +173,8 @@ class Scatterplot {
                     .html(`<h2>${d.name} #${d.pokedex_number}</h2>`)
             })
             .on("mouseout", function(d) {
+                d3.select(this)
+                    .classed("selected", false);
                 d3.select(".chart-tooltip")
                     .attr("transform", `translate(0, 0)`)
                     .style("opacity", "0")
@@ -278,10 +282,12 @@ class Scatterplot {
      * @param max maximum value for the sizeData
      */
     drawLegend(min, max) {
+        const minValue = min ? min : 0;
+        const maxValue = max ? max : 0;
         //Draws the circle legend to show size based on health data
-        let scale = d3.scaleLinear().domain([min, max]).range([3, 15])
+        let scale = d3.scaleLinear().domain([minValue, maxValue]).range([3, 15])
 
-        let circleData = [min, max];
+        let circleData = [minValue, maxValue];
 
         let svg = d3.select('.circle-legend').select('svg').select('g');
 

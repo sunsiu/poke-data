@@ -34,6 +34,7 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
     let scatterplot = new Scatterplot(pokeData, updateInfocard, updateSelectedRow);
     let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree,
          getPokemon, updateSelectedCircle, updateSelectedRow);
+    let stats = new Stats(pokeData);
     
     setupBanner(pokeData, updateAllData);
 });
@@ -66,7 +67,7 @@ function typeRender(type1, type2) {
 }
 
 function getPokemon(id) {
-    return pokeData[id-1];
+    return pokeData.filter(d => +d.pokedex_number == id)[0];
 }
 
 function getEvolutionTree(pokedex_id) {
