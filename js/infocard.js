@@ -7,8 +7,39 @@ class Infocard {
         this.updateSelectedCircle = updateSelectedCircle;
         this.updateSelectedRow = updateSelectedRow;
 
-        this.statNames = ['HP', 'ATK', 'DEF', 'SPEED', 'SP ATK', 'SP DEF'];
+        this.hpScale = d3.scaleLinear()
+            .domain([0, 255]).range([0, 100]).nice()
+        this.atkScale = d3.scaleLinear()
+            .domain([0, 185]).range([0, 100]).nice()
+        this.defScale = d3.scaleLinear()
+            .domain([0, 230]).range([0, 100]).nice()
+        this.spdScale = d3.scaleLinear()
+            .domain([0, 180]).range([0, 100]).nice()
+        this.spAtkScale = d3.scaleLinear()
+            .domain([0, 194]).range([0, 100]).nice()
+        this.spDefScale = d3.scaleLinear()
+            .domain([0, 230]).range([0, 100]).nice()
 
+        let getLabel = (tooltipItem, data) => {
+                switch(tooltipItem.index) {
+                    case 0:
+                        return this.hpScale.invert(+tooltipItem.value).toFixed(0);
+                    case 1:
+                        return this.atkScale.invert(+tooltipItem.value).toFixed(0);
+                    case 2:
+                        return this.defScale.invert(+tooltipItem.value).toFixed(0);
+                    case 3:
+                        return this.spdScale.invert(+tooltipItem.value).toFixed(0);
+                    case 4:
+                        return this.spAtkScale.invert(+tooltipItem.value).toFixed(0);
+                    case 5:
+                        return this.spDefScale.invert(+tooltipItem.value).toFixed(0);
+                    default:
+                        return tooltipItem.value;
+                }
+            }
+
+        this.statNames = ['HP', 'ATK', 'DEF', 'SPEED', 'SP ATK', 'SP DEF'];
         let context = document.getElementById("statsChart").getContext('2d');
         this.chart = new Chart(context, {
             type: 'radar',
@@ -20,8 +51,12 @@ class Infocard {
                 }]
             },
             options: {
-                legend: {
-                    display: false
+                legend: false,
+                tooltips: {
+                    callbacks: {
+                        title: (tooltipItem, data) => `Actual: ${data.labels[tooltipItem[0].index]}`,
+                        label: getLabel
+                    }
                 },
                 scale: {
                     ticks: {
@@ -36,6 +71,7 @@ class Infocard {
                 }
             }
         })
+
         d3.select(".infocard-footer").append("svg")
             .attr("width", "100%")
             .attr('height', '200px')
@@ -48,19 +84,6 @@ class Infocard {
             .range(['#718bc680', '#a7a87880', '#7cc25180', '#a8b93980', '#ef802e80', '#f0588880',
                     '#b7a03680', '#f8d03180', '#e0c06780', '#6c537a80', '#d874d380', ' #c0322880',
                     '#6457a580', '#70599980', '#98d7d680', '#b8b8cf80', '#ee99ac80', '#9f8fc480'])
-
-        this.hpScale = d3.scaleLinear()
-            .domain([0, 255]).range([0, 100]).nice()
-        this.atkScale = d3.scaleLinear()
-            .domain([0, 185]).range([0, 100]).nice()
-        this.defScale = d3.scaleLinear()
-            .domain([0, 230]).range([0, 100]).nice()
-        this.spdScale = d3.scaleLinear()
-            .domain([0, 180]).range([0, 100]).nice()
-        this.spAtkScale = d3.scaleLinear()
-            .domain([0, 194]).range([0, 100]).nice()
-        this.spDefScale = d3.scaleLinear()
-            .domain([0, 230]).range([0, 100]).nice()
         
         this.updateSelected(selected);
     }
@@ -100,6 +123,7 @@ class Infocard {
     }
 
     drawStats(stats, type) {
+        this.chart.data.labels = this.statNames
         this.chart.data.datasets[0].data = stats
         this.chart.data.datasets[0].backgroundColor = `${this.typeColorScale(type)}`
         this.chart.update();

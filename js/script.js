@@ -1,16 +1,15 @@
 let pokeData;
 let evolveData;
-Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')]).then(function (loaded) {
+Promise.all([d3.json('./data/pokemon.json'),
+             d3.json('./data/evolutions.json'),
+             d3.json("./data/types.json")]).then(function (loaded) {
     pokeData = loaded[0];
     evolveData = loaded[1];
+    typeData = loaded[2];
     console.log(pokeData)
 
     function updateInfocard(data) {
         infocard.updateSelected(data);
-    }
-
-    function updateTable(data, isBrushed) {
-        table.updateData(data, isBrushed);
     }
 
     function updateSelectedRow(data) {
@@ -34,6 +33,7 @@ Promise.all([d3.json('./data/pokemon.json'), d3.json('./data/evolutions.json')])
     let scatterplot = new Scatterplot(pokeData, updateInfocard, updateSelectedRow);
     let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree,
          getPokemon, updateSelectedCircle, updateSelectedRow);
+    let typeChart = new TypeChart(typeData);
     let stats = new Stats(pokeData);
     
     setupBanner(pokeData, updateAllData);

@@ -40,7 +40,8 @@ class Table {
             .selectAll("tr")
             .data(data)
             .join("tr")
-            .attr("class", "row");
+            .attr("class", "row")
+            .attr("id", d => `row-${d.pokedex_number}`)
 
         let that = this;
         rows.on("click", function(d) {
@@ -69,13 +70,15 @@ class Table {
         this.makeStatsVis(statsSelect);
     }
 
-    updateSelected(d) {
+    updateSelected(sel) {
         this.clearSelected();
-        if(d !== null) {
-            d3.selectAll(".row").filter((_, i) => i == d.pokedex_number-1).classed("highlight", true);
-            
+        if(sel !== null) {
+            d3.select(`#row-${sel.pokedex_number}`).classed("highlight", true);
+            let container = $('tbody');
+            let scrollTo = $(`#row-${sel.pokedex_number}`);
+
+            container.scrollTop(scrollTo.offset().top - container.offset().top + container.scrollTop() - 30);
         }
-  
     }
 
     clearSelected() {
