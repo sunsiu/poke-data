@@ -1,0 +1,37 @@
+.type-line {
+    stroke: black;
+    stroke-width: 1px;
+    fill: none;
+}
+
+.type-circle {
+    stroke: black;
+    stroke-width: 1px;
+    opacity: 1;
+}
+
+.type-label {
+    text-transform: capitalize;
+    text-anchor: middle;
+    font-family: 'Roboto';
+
+}
+
+.blurred-line {
+    opacity: .1;
+}
+
+.highlight-strong {
+    stroke: #ED553B;
+    stroke-width: 4px;
+}
+
+.highlight-weak {
+    stroke: #20639B;
+    stroke-width: 4px;
+}
+
+.highlight-no-effect {
+    stroke: #F6D55C;
+    stroke-width: 4px;
+}
