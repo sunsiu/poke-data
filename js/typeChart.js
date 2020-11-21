@@ -14,9 +14,6 @@ class TypeChart {
         '#b7a036', '#f8d031', '#e0c067', '#6c537a', '#d874d3', ' #c03228',
         '#6457a5', '#705999', '#98d7d6', '#b8b8cf', '#ee99ac', '#9f8fc4']
 
-        // 0:neutral against, 1:weak against, 2:strong against, 3:no affect against
-        this.legend = ['none', '#20639B80', '#F6D55C80', '#ED553B80'];
-
         this.width = 1200;
         this.height = 650;
 
