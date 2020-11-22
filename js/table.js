@@ -6,12 +6,14 @@ class Filter {
 }
 
 class Table {
-    constructor(data, updateInfocard, updateScatterplot, updateSelectedCircle) {
+    constructor(data, updateInfocard, updateScatterplot, updateSelectedCircle, updateStats, updateSelectedStats) {
         this.data = data;
         this.filteredData = [...this.data];
         this.updateInfocard = updateInfocard;
         this.updateScatterplot = updateScatterplot;
         this.updateSelectedCircle = updateSelectedCircle;
+        this.updateSelectedStats = updateSelectedStats;
+        this.updateStats = updateStats;
         this.visWidth = 75;
         this.visHeight = 25;
         this.currentFilters = [];
@@ -401,6 +403,7 @@ class Table {
         }
 
         this.updateScatterplot(this.filteredData);
+        this.updateStats(this.filteredData);
     }
 
     /**

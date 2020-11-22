@@ -2,7 +2,7 @@ class Stats {
     constructor(data) {
         this.data = data;
         this.visWidth = 220;
-        this.visHeight = 25;
+        this.visHeight = 15;
         this.height = 300;
         this.offset = 80;
         this.statKeys = ["attack", "defense", "speed", "hp", "sp_attack", "sp_defense"];
@@ -41,20 +41,22 @@ class Stats {
 
     }
 
-    updatePlot(data) {
-        let stats = this.statKeys.map(k => this.calculateQuartiles(k, data));
+    updatePlot() {
+        let stats = this.statKeys.map(k => this.calculateQuartiles(k, this.data));
 
         let svg = d3.select("#stats-svg");
         // Middle lines
-        svg.selectAll("horizontalLines")
+        svg.selectAll(".horizontalLines")
             .data(stats)
             .join("line")
+            .classed("horizontalLines", true)
             .attr("x1", this.offset)
             .attr("x2", this.visWidth)
             .attr("y1", d => this.yScale(d.name))
             .attr("y2", d => this.yScale(d.name))
             .style("stroke", "gray")
             .style("stroke-width", "2px");
+
 
         // Middle box
         svg.selectAll("rect")
@@ -79,9 +81,10 @@ class Stats {
             .style("stroke-width", "2px");
 
         // Show median
-        svg.selectAll("medianLines")
+        svg.selectAll(".medianLines")
             .data(stats)
             .join("line")
+            .classed("medianLines", true)
             .attr("x1", d => {
                 let scale = this.getScale(d.name);
                 return scale(d.median);
@@ -99,18 +102,22 @@ class Stats {
             })
             .style("stroke-width", "2px");
 
-        svg.selectAll("minLines")
+
+        svg.selectAll(".minLines")
             .data(stats)
             .join("line")
+            .classed("minLines", true)
             .attr("x1", this.offset)
             .attr("x2", this.offset)
             .attr("y1", d => this.yScale(d.name) - (this.visHeight/2))
             .attr("y2", d => this.yScale(d.name) + (this.visHeight/2))
             .style("stroke", "gray")
             .style("stroke-width", "2px");
-        svg.selectAll("maxLines")
+
+        svg.selectAll(".maxLines")
             .data(stats)
             .join("line")
+            .classed("maxLines", true)
             .attr("x1", this.visWidth)
             .attr("x2", this.visWidth)
             .attr("y1", d => this.yScale(d.name) - (this.visHeight/2))
@@ -119,29 +126,34 @@ class Stats {
             .style("stroke-width", "2px");
 
         // Stat labels
-        svg.selectAll("labelText")
+        svg.selectAll(".labelText")
             .data(stats)
             .join("text")
+            .classed("labelText", true)
             .attr("x", 0)
             .attr("y", d => this.yScale(d.name) + 5)
             .text((d, i) => this.labels[i])
             .attr("font-size", "12px")
             .attr("font-weight", "bold")
             .attr("fill", "gray");
+
         
         // Stat numbers
-        svg.selectAll("minText")
+        svg.selectAll(".minText")
             .data(stats)
             .join("text")
+            .classed("minText", true)
             .attr("x", this.offset-13)
             .attr("y", d => this.yScale(d.name) + 3)
             .text(d => d.min)
             .attr("font-size", "8px")
             .attr("font-weight", "bold")
             .attr("fill", "gray");
-        svg.selectAll("maxText")
+
+        svg.selectAll(".maxText")
             .data(stats)
             .join("text")
+            .classed("maxText", true)
             .attr("x", this.visWidth+5)
             .attr("y", d => this.yScale(d.name) + 3)
             .text(d => d.max)
@@ -184,8 +196,36 @@ class Stats {
         return stats
     }
 
+    updateScales() {
+        this.hpScale = d3.scaleLinear()
+            .domain([d3.min(this.data, d => d.hp), d3.max(this.data, d => d.hp)])
+            .range([this.offset, this.visWidth]).nice();
+        this.atkScale = d3.scaleLinear()
+            .domain([d3.min(this.data, d => d.attack), d3.max(this.data, d => d.attack)])
+            .range([this.offset, this.visWidth]).nice();
+        this.defScale = d3.scaleLinear()
+            .domain([d3.min(this.data, d => d.defense), d3.max(this.data, d => d.defense)])
+            .range([this.offset, this.visWidth]).nice();
+        this.spdScale = d3.scaleLinear()
+            .domain([d3.min(this.data, d => d.speed), d3.max(this.data, d => d.speed)])
+            .range([this.offset, this.visWidth]).nice();
+        this.spAtkScale = d3.scaleLinear()
+            .domain([d3.min(this.data, d => d.sp_attack), d3.max(this.data, d => d.sp_attack)])
+            .range([this.offset, this.visWidth]).nice();
+        this.spDefScale = d3.scaleLinear()
+            .domain([d3.min(this.data, d => d.sp_defense), d3.max(this.data, d => d.sp_defense)])
+            .range([this.offset, this.visWidth]).nice();
+    }
+
     updateData(newData) {
-        this.data = newData;
-        this.drawPlot();
+        if (newData.length > 0) {
+            this.data = newData;
+            this.updateScales();
+            this.updatePlot();
+        }
+    }
+
+    updateSelected(selected) {
+
     }
 }
