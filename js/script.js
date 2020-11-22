@@ -39,7 +39,7 @@ Promise.all([d3.json('./data/pokemon.json'),
     }
     
     let table = new Table(pokeData, updateInfocard, updateScatterplot, updateSelectedCircle, updateStats, updateSelectedStats);
-    let scatterplot = new Scatterplot(pokeData, updateInfocard, updateSelectedRow);
+    let scatterplot = new Scatterplot(pokeData, updateInfocard, updateSelectedRow, updateSelectedStats);
     let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree,
          getPokemon, updateSelectedCircle, updateSelectedRow);
     let typeChart = new TypeChart(typeData);

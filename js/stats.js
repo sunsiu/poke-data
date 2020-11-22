@@ -5,6 +5,7 @@ class Stats {
         this.visHeight = 15;
         this.height = 300;
         this.offset = 80;
+        this.selected = this.data[3];
         this.statKeys = ["attack", "defense", "speed", "hp", "sp_attack", "sp_defense"];
         this.labels = ["ATK", "DEF", "SPD", "HP", "SP ATK", "SP DEF"];
         this.hpScale = d3.scaleLinear()
@@ -38,7 +39,6 @@ class Stats {
             .attr("id", "stats-svg")
             .attr("width", this.visWidth+30)
             .attr("height", this.height);
-
     }
 
     updatePlot() {
@@ -57,7 +57,6 @@ class Stats {
             .style("stroke", "gray")
             .style("stroke-width", "2px");
 
-
         // Middle box
         svg.selectAll("rect")
             .data(stats)
@@ -73,11 +72,7 @@ class Stats {
                 return scale(d.q3) - scale(d.q1);
             })
             .style("fill", "none")
-            .style("stroke", d => {
-                let c = d3.color(this.statColors(d.name));
-                c.opacity = 1
-                return c;
-            })
+            .style("stroke", d => this.statColors(d.name))
             .style("stroke-width", "2px");
 
         // Show median
@@ -95,14 +90,10 @@ class Stats {
             })
             .attr("y1", d => this.yScale(d.name) - (this.visHeight/2))
             .attr("y2", d => this.yScale(d.name) + (this.visHeight/2))
-            .style("stroke", d => {
-                let c = d3.color(this.statColors(d.name));
-                c.opacity = 1
-                return c;
-            })
+            .style("stroke", d => this.statColors(d.name))
             .style("stroke-width", "2px");
 
-
+        // End lines
         svg.selectAll(".minLines")
             .data(stats)
             .join("line")
@@ -136,14 +127,13 @@ class Stats {
             .attr("font-size", "12px")
             .attr("font-weight", "bold")
             .attr("fill", "gray");
-
         
         // Stat numbers
         svg.selectAll(".minText")
             .data(stats)
             .join("text")
             .classed("minText", true)
-            .attr("x", this.offset-13)
+            .attr("x", this.offset-15)
             .attr("y", d => this.yScale(d.name) + 3)
             .text(d => d.min)
             .attr("font-size", "8px")
@@ -160,6 +150,36 @@ class Stats {
             .attr("font-size", "9px")
             .attr("font-weight", "bold")
             .attr("fill", "gray");
+        
+        this.drawSelected()
+    }
+
+    drawSelected() {
+        let svg = d3.select("#stats-svg");
+        svg.selectAll("circle")
+            .data(this.statKeys)
+            .join("circle")
+            .transition()
+            .duration(800)
+            .attr("visibility", d => {
+                let scale = this.getScale(d);
+                let scaledVal = scale(this.selected[d]);
+                return (scaledVal >= this.offset) && (scaledVal <= this.visWidth) ? 
+                    "visible" : 
+                    "hidden";
+            })
+            .attr("cx", d => {
+                let scale = this.getScale(d);
+                return scale(this.selected[d]);
+                // return (scaledVal >= this.offset) && (scaledVal <= this.visWidth) ? 
+                //     scaledVal : 
+                //     scaledVal < this.offset ? this.offset-3 : this.visWidth-3;
+            })
+            .attr("cy", d => this.yScale(d))
+            .attr("r", 6)
+            .attr("class", `${this.selected.type1}-type`)
+            .style("opacity", 0.60)
+            .style("stroke", "none");
     }
 
     getScale(key) {
@@ -226,6 +246,7 @@ class Stats {
     }
 
     updateSelected(selected) {
-
+        this.selected = selected;
+        this.drawSelected();
     }
 }

@@ -48,6 +48,7 @@ class Table {
         let that = this;
         rows.on("click", function(d) {
             that.updateSelected(d);
+            that.updateSelectedStats(d);
             that.updateInfocard(d);
             that.updateSelectedCircle(d);
         });
