@@ -1,8 +1,9 @@
 class Scatterplot {
-    constructor(data, updateInfocard, updateSelectedRow) {
+    constructor(data, updateInfocard, updateSelectedRow, updateSelectedStats) {
         this.data = data;
         this.updateInfocard = updateInfocard;
         this.updateSelectedRow = updateSelectedRow;
+        this.updateSelectedStats = updateSelectedStats;
         this.margin = 25;
         this.height = 500;
         this.width = 700;
@@ -161,6 +162,7 @@ class Scatterplot {
             .on("mouseup", (d, i) => {
                 this.updateSelected(d);
                 this.updateSelectedRow(d);
+                this.updateSelectedStats(d);
                 this.updateInfocard(d);
             })
             .on("mouseover", function(d, i) {

@@ -18,6 +18,7 @@ Promise.all([d3.json('./data/pokemon.json'),
 
     function updateAllData(dataset) {
         table.updateData(dataset);  // Updating scatterplot with (potentially) filtered dataset in table update
+        stats.updateData(dataset);
         infocard.updateSelected(dataset[3]);
     }
 
@@ -28,9 +29,17 @@ Promise.all([d3.json('./data/pokemon.json'),
     function updateSelectedCircle(data) {
         scatterplot.updateSelected(data);
     }
+
+    function updateStats(data) {
+        stats.updateData(data);
+    }
+
+    function updateSelectedStats(selected) {
+        stats.updateSelected(selected);
+    }
     
-    let table = new Table(pokeData, updateInfocard, updateScatterplot, updateSelectedCircle);
-    let scatterplot = new Scatterplot(pokeData, updateInfocard, updateSelectedRow);
+    let table = new Table(pokeData, updateInfocard, updateScatterplot, updateSelectedCircle, updateStats, updateSelectedStats);
+    let scatterplot = new Scatterplot(pokeData, updateInfocard, updateSelectedRow, updateSelectedStats);
     let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree,
          getPokemon, updateSelectedCircle, updateSelectedRow);
     let typeChart = new TypeChart(typeData);

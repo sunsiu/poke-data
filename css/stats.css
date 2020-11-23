@@ -1,8 +1,6 @@
 #stats {
     padding: 10px 15px;
-}
-
-#stats-svg line {
-    stroke: gray;
-    stroke-width: 2px;
+    background-color: white;
+    border-radius: 5px;
+    width: 250px;
 }
