@@ -83,7 +83,7 @@ select {
 
 .item-types {
     grid-column: 1/4;
-    grid-row: 15/16;
+    grid-row: 10/12;
     text-align: center;
 }
 

@@ -21,6 +21,7 @@ class TypeChart {
         this.bigPadding = 50;
 
         this.drawArcChart();
+        this.drawLegend();
     }
 
     drawArcChart() {
@@ -100,8 +101,6 @@ class TypeChart {
             d3.select(this).style("stroke-width", 1)
             d3.selectAll(".type-line").attr("class", "type-line");
         })
-
-        this.drawLegend();
     }
 
     createRelations(data) {

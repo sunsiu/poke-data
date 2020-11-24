@@ -1,3 +1,11 @@
+.intro h1 {
+    margin: 5px;
+}
+
+.intro p {
+    width: 50%;
+    display: inline-block;
+}
 .type-line {
     stroke: black;
     stroke-width: 1px;
@@ -24,14 +32,17 @@
 .highlight-strong {
     stroke: #ED553B;
     stroke-width: 4px;
+    color: #ED553B;
 }
 
 .highlight-weak {
     stroke: #20639B;
     stroke-width: 4px;
+    color: #20639B;
 }
 
 .highlight-no-effect {
     stroke: #F6D55C;
     stroke-width: 4px;
+    color: #F6D55C;
 }
