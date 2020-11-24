@@ -352,7 +352,7 @@ class Table {
         // Add clear all button 
         let svg = d3.select("#clear")
             .append("svg")
-            .attr("width", "150px")
+            .attr("width", "100px")
             .attr("height", "30px")
             .attr("id", "clear-all-button")
             .on("click", () => this.clearAllFilters());
@@ -360,7 +360,7 @@ class Table {
         svg.append("text")
             .attr("x", 11)
             .attr("y", 19)
-            .text("Clear Filters")
+            .text("Clear all")
             .style("font-size", "14pt")
             .style("font-weight", "bold")
             .style("fill", "black")
@@ -370,7 +370,7 @@ class Table {
             .attr("href", "assets/x.png")
             .attr("height", "15px")
             .attr("width", "15px")
-            .attr("x", "110px")
+            .attr("x", "83px")
             .attr("y", "5px");
     }
 
@@ -432,6 +432,10 @@ class Table {
 
         // Clear searchbar
         d3.select("#search-bar").property("value", "");
+
+        // Clear sort headers
+        this.sortData('pokedex_number', true, null);
+        this.headerData.forEach(h => h.sorted = false);
 
         this.updateCurrentFilters()
         this.drawTable();
