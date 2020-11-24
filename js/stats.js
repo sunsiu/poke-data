@@ -39,6 +39,9 @@ class Stats {
             .attr("id", "stats-svg")
             .attr("width", this.visWidth+30)
             .attr("height", this.height);
+        d3.select("#stats")
+            .append("div")
+            .attr("id", "stat-tooltip");
     }
 
     updatePlot() {
@@ -156,11 +159,14 @@ class Stats {
 
     drawSelected() {
         let svg = d3.select("#stats-svg");
-        svg.selectAll("circle")
+
+        let tooltip = d3.select("#stat-tooltip")
+            .classed("tooltip", true)
+            .style("opacity", 0);
+
+        let circles = svg.selectAll("circle")
             .data(this.statKeys)
             .join("circle")
-            .transition()
-            .duration(800)
             .attr("visibility", d => {
                 let scale = this.getScale(d);
                 let scaledVal = scale(this.selected[d]);
@@ -168,18 +174,29 @@ class Stats {
                     "visible" : 
                     "hidden";
             })
-            .attr("cx", d => {
-                let scale = this.getScale(d);
-                return scale(this.selected[d]);
-                // return (scaledVal >= this.offset) && (scaledVal <= this.visWidth) ? 
-                //     scaledVal : 
-                //     scaledVal < this.offset ? this.offset-3 : this.visWidth-3;
-            })
             .attr("cy", d => this.yScale(d))
             .attr("r", 6)
             .attr("class", `${this.selected.type1}-type`)
             .style("opacity", 0.60)
-            .style("stroke", "none");
+            .style("stroke", "none")
+            .on("mouseover", d => {
+                tooltip.style("opacity", 0.75)
+                    .html(this.tooltipRender(d));
+                })
+            .on("mousemove", d => tooltip
+                .style("left", (d3.event.pageX + 10) + "px")
+                .style("top", (d3.event.pageY) + "px"))
+            .on("mouseout", d => {
+                tooltip.style("opacity", 0);
+            });
+
+        circles
+            .transition()
+            .duration(800)            
+            .attr("cx", d => {
+                let scale = this.getScale(d);
+                return scale(this.selected[d]);
+            });
     }
 
     getScale(key) {
@@ -248,5 +265,16 @@ class Stats {
     updateSelected(selected) {
         this.selected = selected;
         this.drawSelected();
+    }
+
+    /**
+     * Returns html that can be used to render the tooltip.
+     * @author DataVis course staff
+     * @param data 
+     * @returns {string}
+     */
+    tooltipRender(data) {
+        let text = "<h2>" + this.selected[data] + "</h2>";
+        return text;
     }
 }
