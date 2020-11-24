@@ -19,7 +19,11 @@ Promise.all([d3.json('./data/pokemon.json'),
     function updateAllData(dataset) {
         table.updateData(dataset);  // Updating scatterplot with (potentially) filtered dataset in table update
         stats.updateData(dataset);
-        infocard.updateSelected(dataset[3]);
+
+        const selected = dataset[3];
+        infocard.updateSelected(selected);
+        table.updateSelected(selected);
+        scatterplot.updateSelected(selected);
     }
 
     function updateScatterplot(data) {
@@ -37,14 +41,17 @@ Promise.all([d3.json('./data/pokemon.json'),
     function updateSelectedStats(selected) {
         stats.updateSelected(selected);
     }
+    const defaultSelected = pokeData[3];
     
     let table = new Table(pokeData, updateInfocard, updateScatterplot, updateSelectedCircle, updateStats, updateSelectedStats);
     let scatterplot = new Scatterplot(pokeData, updateInfocard, updateSelectedRow, updateSelectedStats);
-    let infocard = new Infocard(pokeData[3], typeRender, getEvolutionTree,
+    let infocard = new Infocard(defaultSelected, typeRender, getEvolutionTree,
          getPokemon, updateSelectedCircle, updateSelectedRow);
     let typeChart = new TypeChart(typeData);
     let stats = new Stats(pokeData);
     
+    table.updateSelected(defaultSelected);
+    scatterplot.updateSelected(defaultSelected);
     setupBanner(pokeData, updateAllData);
 });
 
