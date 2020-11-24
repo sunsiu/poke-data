@@ -14,9 +14,10 @@ circle {
     opacity: .8;
 }
 
-circle.selected {
+circle.selected, circle.peek  {
     stroke: black;
     stroke-width: 2px;
+    opacity: 1;
 }
 
 .axis path,
@@ -103,8 +104,6 @@ div.dropdown-wrapper {
     margin-bottom: 5px;
 }
 
-/* Brush */
 .blurred {
-    /* fill: gainsboro !important; */
     opacity: .2;
   }

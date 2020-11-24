@@ -1,5 +1,6 @@
 class Scatterplot {
     constructor(data, updateInfocard, updateSelectedRow, updateSelectedStats) {
+        this.allData = data;
         this.data = data;
         this.updateInfocard = updateInfocard;
         this.updateSelectedRow = updateSelectedRow;
@@ -124,7 +125,7 @@ class Scatterplot {
 
     updateSelected(selected) {
         this.clearSelected();
-        d3.selectAll("circle").classed("blurred", true)
+        d3.select(".plot-svg").selectAll("circle").classed("blurred", true);
         d3.select(`#circle-${selected.pokedex_number}`)
             .classed("blurred", false)
             .classed("selected", true);
@@ -137,15 +138,15 @@ class Scatterplot {
         this.data = data;
 
         this.xScale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d[xIndicator])])
+            .domain([0, d3.max(this.allData, d => d[xIndicator])])
             .range([this.margin * 2, this.width])
 
         this.yScale = d3.scaleLinear()
-            .domain([0, d3.max(data, d => d[yIndicator])])
+            .domain([0, d3.max(this.allData, d => d[yIndicator])])
             .range([this.height, this.margin*2])
 
-        const circleMin = d3.min(data, d => d[circleSizeIndicator]);
-        const circleMax = d3.max(data, d => d[circleSizeIndicator]);
+        const circleMin = d3.min(this.allData, d => d[circleSizeIndicator]);
+        const circleMax = d3.max(this.allData, d => d[circleSizeIndicator]);
         this.circleScale = d3.scaleLinear()
             .domain([circleMin, circleMax])
             .range([3, 15])
@@ -167,7 +168,7 @@ class Scatterplot {
             })
             .on("mouseover", function(d, i) {
                 d3.select(this)
-                    .classed("selected", true);
+                    .classed("peek", true);
                 d3.select(".chart-tooltip")
                     .style("left", `${d3.event.pageX}px`)
                     .style("top", `${d3.event.pageY - 15}px`)
@@ -176,7 +177,7 @@ class Scatterplot {
             })
             .on("mouseout", function(d) {
                 d3.select(this)
-                    .classed("selected", false);
+                    .classed("peek", false);
                 d3.select(".chart-tooltip")
                     .attr("transform", `translate(0, 0)`)
                     .style("opacity", "0")
@@ -203,8 +204,9 @@ class Scatterplot {
     }
 
     clearSelected() {
-        d3.selectAll("circle").classed("selected", false);
-        d3.selectAll("circle").classed("blurred", false);
+        d3.select(".plot-svg").selectAll("circle")
+            .classed("selected", false)
+            .classed("blurred", false);
     }
 
     /**
