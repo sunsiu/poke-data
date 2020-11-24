@@ -78,7 +78,12 @@
 
 #current-filters {
     display: inline-block;
-    width: 700px;
+    width: 500px;
+}
+
+#clear-all-button:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 /* Style the collapsible content. Note: hidden by default */

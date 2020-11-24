@@ -244,7 +244,7 @@ class Table {
         let that = this;
         let tooltip = d3.select('#tool-tip')
             .classed("tooltip", true)
-            .style("opacity", 0);
+            .style("visibility", "hidden");
 
         selection.selectAll("rect")
             .data(d => [d])
@@ -258,7 +258,7 @@ class Table {
             .attr("height", this.visHeight)
             .style("fill", d => this.statColors(d.stat))
             .on("mouseover", function(d) {
-                tooltip.style("opacity", 0.75)
+                tooltip.style("visibility", "visible")
                     .html(that.tooltipRender(d));
                 d3.select(this)
                     .style("opacity", 0.5);
@@ -267,7 +267,7 @@ class Table {
                 .style("left", (d3.event.pageX + 10) + "px")
                 .style("top", (d3.event.pageY) + "px"))
             .on("mouseout", function(d) {
-                tooltip.style("opacity", 0);
+                tooltip.style("visibility", "hidden");
                 d3.select(this)
                     .style("opacity", 1)
             });
@@ -348,6 +348,30 @@ class Table {
                 }
             });
         }
+
+        // Add clear all button 
+        let svg = d3.select("#clear")
+            .append("svg")
+            .attr("width", "150px")
+            .attr("height", "30px")
+            .attr("id", "clear-all-button")
+            .on("click", () => this.clearAllFilters());
+
+        svg.append("text")
+            .attr("x", 11)
+            .attr("y", 19)
+            .text("Clear Filters")
+            .style("font-size", "14pt")
+            .style("font-weight", "bold")
+            .style("fill", "black")
+            .style("opacity", "100%")
+            .style("padding", "5px")
+        svg.append("image")
+            .attr("href", "assets/x.png")
+            .attr("height", "15px")
+            .attr("width", "15px")
+            .attr("x", "110px")
+            .attr("y", "5px");
     }
 
     drawCurrentFilter(filter) {
@@ -371,6 +395,8 @@ class Table {
             .attr("width", "15px")
             .attr("x", "63px")
             .attr("y", "3px");
+
+        d3.select("#clear-all-button").raise();
     }
 
     removeFilter(filter) {
@@ -385,6 +411,29 @@ class Table {
         this.updateCurrentFilters();
 
         d3.select("#" + filter.value + "-curr-filter").remove();
+        this.drawTable();
+    }
+
+    clearAllFilters() {
+        // Clear current filters
+        this.currentFilters = [];
+        d3.select("#current-filters").selectAll("svg").remove();
+
+        // Reset sliders
+        var label;
+        for (label of this.visLabels) {
+            let minVal = d3.min(this.data, d => d[label]);
+            let maxVal = d3.max(this.data, d => d[label]);
+            d3.select("#" + label + "-label")
+                .property("value", minVal + " - " + maxVal);
+
+            $( "#" + label + "-range" ).slider('values', [minVal,maxVal]);
+        }
+
+        // Clear searchbar
+        d3.select("#search-bar").property("value", "");
+
+        this.updateCurrentFilters()
         this.drawTable();
     }
 
