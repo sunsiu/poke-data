@@ -169,11 +169,16 @@ class Scatterplot {
             .on("mouseover", function(d, i) {
                 d3.select(this)
                     .classed("peek", true);
+
+                let content = `<h2>${d.name} #${d.pokedex_number}</h2>`;
+                if(d.is_legendary) {
+                    content = `<h2>${String.fromCharCode(9733)}${d.name} #${d.pokedex_number}</h2>`
+                }
                 d3.select(".chart-tooltip")
                     .style("left", `${d3.event.pageX}px`)
                     .style("top", `${d3.event.pageY - 15}px`)
                     .style("opacity", ".8")
-                    .html(`<h2>${d.name} #${d.pokedex_number}</h2>`)
+                    .html(content)
             })
             .on("mouseout", function(d) {
                 d3.select(this)
