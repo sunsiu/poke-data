@@ -95,7 +95,11 @@ class Infocard {
         let body = d3.select(".infocard-body");
         let footer = d3.select(".infocard-footer");
 
-        header.select("#info-name").text(`${data.name} #${data.pokedex_number}`);
+        let nameText = `${data.name} #${data.pokedex_number}`
+        if (data.is_legendary) {
+            nameText = `${String.fromCharCode(9733)} ${nameText}`
+        }
+        header.select("#info-name").text(nameText);
 
         d3.select("#infocard").attr("class", `${data.type1}-type`);
         body.select(".sprite").attr("src", `sprites/pokemon/${data.pokedex_number}.png`)

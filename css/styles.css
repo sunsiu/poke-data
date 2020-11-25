@@ -28,11 +28,21 @@ body {
     padding-left: 50px;
 }
 
+.selector-container {
+    display: inline-block;
+}
+
 #selector-label {
     font-weight: bold;
     font-size: 16pt;
     margin-right: 20px;
     color: white;
+}
+
+.legendary-legend {
+    color: white;
+    display: inline-block;
+    margin-left: 30px;
 }
 
 select {
