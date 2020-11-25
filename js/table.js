@@ -442,6 +442,9 @@ class Table {
         this.currentFilters = [];
         d3.select("#current-filters").selectAll("svg").remove();
 
+        // Clear legendary
+        d3.select("#is-leg").property("checked", false);
+
         // Reset sliders
         var label;
         for (label of this.visLabels) {
