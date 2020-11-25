@@ -81,9 +81,9 @@ class Infocard {
             .domain(['water', 'normal', 'grass', 'bug', 'fire', 'psychic',
                      'rock', 'electric', 'ground', 'dark', 'poison', 'fighting',
                      'dragon', 'ghost', 'ice', 'steel', 'fairy', 'flying'])
-            .range(['#718bc680', '#a7a87880', '#7cc25180', '#a8b93980', '#ef802e80', '#f0588880',
-                    '#b7a03680', '#f8d03180', '#e0c06780', '#6c537a80', '#d874d380', ' #c0322880',
-                    '#6457a580', '#70599980', '#98d7d680', '#b8b8cf80', '#ee99ac80', '#9f8fc480'])
+            .range(['#718bc6', '#a7a878', '#7cc251', '#a8b939', '#ef802e', '#f05888',
+                    '#b7a036', '#f8d031', '#e0c067', '#6c537a', '#d874d3', ' #c03228',
+                    '#6457a5', '#705999', '#98d7d6', '#b8b8cf', '#ee99ac', '#9f8fc4'])
         
         this.updateSelected(selected);
     }
@@ -129,7 +129,7 @@ class Infocard {
     drawStats(stats, type) {
         this.chart.data.labels = this.statNames
         this.chart.data.datasets[0].data = stats
-        this.chart.data.datasets[0].backgroundColor = `${this.typeColorScale(type)}`
+        this.chart.data.datasets[0].backgroundColor = `${this.typeColorScale(type)}80`
         this.chart.update();
     }
 

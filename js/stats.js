@@ -1,9 +1,9 @@
 class Stats {
     constructor(data) {
         this.data = data;
-        this.visWidth = 220;
-        this.visHeight = 15;
-        this.height = 300;
+        this.visWidth = 200;
+        this.visHeight = 20;
+        this.height = 250;
         this.offset = 80;
         this.selected = this.data[3];
         this.statKeys = ["attack", "defense", "speed", "hp", "sp_attack", "sp_defense"];
@@ -28,6 +28,13 @@ class Stats {
         this.statColors = d3.scaleOrdinal()
             .domain(this.statKeys)
             .range(["#FA6163", "#F47E3E", "#F9C74F", "#90BE6D", "#6DC5AB", "#6687A3"]);
+        this.typeColorScale = d3.scaleOrdinal()
+            .domain(['water', 'normal', 'grass', 'bug', 'fire', 'psychic',
+                     'rock', 'electric', 'ground', 'dark', 'poison', 'fighting',
+                     'dragon', 'ghost', 'ice', 'steel', 'fairy', 'flying'])
+            .range(['#718bc6', '#a7a878', '#7cc251', '#a8b939', '#ef802e', '#f05888',
+                    '#b7a036', '#f8d031', '#e0c067', '#6c537a', '#d874d3', ' #c03228',
+                    '#6457a5', '#705999', '#98d7d6', '#b8b8cf', '#ee99ac', '#9f8fc4'])
 
         this.drawPlot();
         this.updatePlot(this.data);
@@ -35,6 +42,8 @@ class Stats {
 
     drawPlot() {
         let svg = d3.select("#stats")
+            .append("div")
+            .attr("id", "stats-div")
             .append("svg")
             .attr("id", "stats-svg")
             .attr("width", this.visWidth+30)
@@ -158,6 +167,12 @@ class Stats {
     }
 
     drawSelected() {
+        d3.select("#stats")
+            .style("border", "solid 3px " + this.typeColorScale(this.selected.type1));
+
+        d3.select("#stats-header")
+            .style("background-color", this.typeColorScale(this.selected.type1));
+
         let svg = d3.select("#stats-svg");
 
         let tooltip = d3.select("#stat-tooltip")

@@ -1,6 +1,21 @@
 #stats {
-    padding: 10px 15px;
     background-color: white;
     border-radius: 5px;
     width: 250px;
+}
+
+#stats-header {
+    color: white;
+    padding: 10px;
+    border-radius: 2px 2px 0 0;
+    height: 30px;
+    /* width: 250px; */
+    /* background: linear-gradient(
+        rgba(0, 0, 0, 0.1), 
+        rgba(0, 0, 0, 0.1)
+      ); */
+}
+
+#stats-div {
+    padding: 10px 15px;
 }
