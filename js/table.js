@@ -296,13 +296,30 @@ class Table {
         let filterSel = d3.select("#filters");
 
         // Legendary checkbox
-        // filterSel.select("#is-legendary-filter")
-        //     .on("change", () => {
-        //         let newFilter = new Filter("legendary", );
-        //     })
+        filterSel.select("#is-legendary-filter")
+            .on("change", () => {
+                let isChecked = filterSel.select("#is-leg").property("checked");
+                let searchIdx = this.currentFilters.findIndex(f => f.label == "legendary");
+                if (searchIdx < 0) {
+                    let newFilter = new Filter("legendary", isChecked);
+                    this.currentFilters.push(newFilter)
+                }
+                else {
+                    this.currentFilters[searchIdx].value = isChecked;
+                }
+                this.updateCurrentFilters();
+                this.drawTable();
+            })
 
         let searchBar = d3.select("#search-bar");
-        searchBar.on("keyup", () => this.onSearchPokemon());
+        searchBar.on("keyup", () => {
+
+            let searchVal = searchBar.property("value").toLowerCase();
+            if (d3.event.keyCode === 13 || searchVal == "") {
+                this.onSearchPokemon()
+            }
+            
+        });
 
         // Type filter buttons
         let imgGroup = filterSel.select("#type-buttons");
@@ -456,6 +473,9 @@ class Table {
             }
             else if (f.label == "search") {
                 this.filteredData = this.filteredData.filter(d => d.name.toLowerCase().includes(f.value) || d.pokedex_number == f.value);
+            }
+            else if (f.label == "legendary") {
+                this.filteredData = this.filteredData.filter(d => d.is_legendary == f.value);
             }
             else {
                 this.filteredData = this.filteredData.filter(d => d[f.label] >= f.value[0] && d[f.label] <= f.value[1]);
