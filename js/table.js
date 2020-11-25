@@ -59,7 +59,7 @@ class Table {
 
         tds.filter(d => !d.vis && !d.isType)
             .attr("width", d => d.stat == "pokedex_number" ? "30" : "70")
-            .text(d => d.val);
+            .text(d => d.stat == "name" && d.isLegendary ? String.fromCharCode(9733) + d.val : d.val);
 
         let typeImgs = tds.filter(d => !d.vis && d.isType).text(d => d.val ? "" : "--");
         typeImgs
@@ -105,7 +105,8 @@ class Table {
                     vis: false,
                     isType: false,
                     val: d[key],
-                    stat: key
+                    stat: key,
+                    isLegendary: d.is_legendary
                 };
                 cells.push(statInfo);
             }
@@ -294,6 +295,12 @@ class Table {
     drawFilters() {
         let filterSel = d3.select("#filters");
 
+        // Legendary checkbox
+        // filterSel.select("#is-legendary-filter")
+        //     .on("change", () => {
+        //         let newFilter = new Filter("legendary", );
+        //     })
+
         let searchBar = d3.select("#search-bar");
         searchBar.on("keyup", () => this.onSearchPokemon());
 
@@ -362,7 +369,6 @@ class Table {
             .attr("y", 19)
             .text("Clear all")
             .style("font-size", "14pt")
-            .style("font-weight", "bold")
             .style("fill", "black")
             .style("opacity", "100%")
             .style("padding", "5px")
