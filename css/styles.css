@@ -26,10 +26,13 @@ body {
     grid-row: 1/ 2;
     padding: 10px;
     padding-left: 50px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .selector-container {
     display: inline-block;
+    margin-right: 25px;
 }
 
 #selector-label {
@@ -42,7 +45,25 @@ body {
 .legendary-legend {
     color: white;
     display: inline-block;
-    margin-left: 30px;
+    margin-right: 30px;
+    font-size: 14pt;
+}
+
+.my-link {
+    margin-right: 25px;
+    display: inline-block;
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+.my-link a:link,
+.my-link a:visited  {
+    color: white;
+    text-decoration: none;
+}
+
+.my-link a:hover {
+    color: lightgray;
 }
 
 select {
