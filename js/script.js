@@ -24,6 +24,7 @@ Promise.all([d3.json('./data/pokemon.json'),
         infocard.updateSelected(selected);
         table.updateSelected(selected);
         scatterplot.updateSelected(selected);
+        stats.updateSelected(selected);
     }
 
     function updateScatterplot(data) {
