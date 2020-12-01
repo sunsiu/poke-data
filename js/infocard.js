@@ -164,7 +164,7 @@ class Infocard {
                 const selectedId = this.id.slice(4);
                 that.updateSelected(that.getPokemon(+selectedId))
                 that.updateSelectedCircle({pokedex_number: selectedId});
-                that.updateSelectedRow({pokedex_number: selectedId});
+                that.updateSelectedRow({pokedex_number: selectedId}, true);
             });
 
         // Nodes

@@ -73,14 +73,16 @@ class Table {
         this.makeStatsVis(statsSelect);
     }
 
-    updateSelected(sel) {
+    updateSelected(sel, scrollTo=false) {
         this.clearSelected();
         if(sel !== null) {
             d3.select(`#row-${sel.pokedex_number}`).classed("highlight", true);
-            let container = $('tbody');
-            let scrollTo = $(`#row-${sel.pokedex_number}`);
+            if(scrollTo) {
+                let container = $('tbody');
+                let scrollTo = $(`#row-${sel.pokedex_number}`);
 
-            container.scrollTop(scrollTo.offset().top - container.offset().top + container.scrollTop() - 30);
+                container.scrollTop(scrollTo.offset().top - container.offset().top + container.scrollTop() - 30);
+            }
         }
     }
 

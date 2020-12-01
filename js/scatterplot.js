@@ -162,7 +162,7 @@ class Scatterplot {
             .attr("class", (d, i) => `${d.type1}-type`)
             .on("mouseup", (d, i) => {
                 this.updateSelected(d);
-                this.updateSelectedRow(d);
+                this.updateSelectedRow(d, true);
                 this.updateSelectedStats(d);
                 this.updateInfocard(d);
             })
