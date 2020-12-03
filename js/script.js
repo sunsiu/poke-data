@@ -12,8 +12,8 @@ Promise.all([d3.json('./data/pokemon.json'),
         infocard.updateSelected(data);
     }
 
-    function updateSelectedRow(data) {
-        table.updateSelected(data);
+    function updateSelectedRow(data, scrollTo=false) {
+        table.updateSelected(data, scrollTo);
     }
 
     function updateAllData(dataset) {
