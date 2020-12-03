@@ -1,11 +1,12 @@
 class Infocard {
-    constructor(selected, renderTypes, getEvolutionTree, getPokemon, updateSelectedCircle, updateSelectedRow) {
+    constructor(selected, renderTypes, getEvolutionTree, getPokemon, updateSelectedCircle, updateSelectedRow, updateSelectedStat) {
         this.selected = null;
         this.renderTypes = renderTypes;
         this.getEvolutionTree = getEvolutionTree;
         this.getPokemon = getPokemon;
         this.updateSelectedCircle = updateSelectedCircle;
         this.updateSelectedRow = updateSelectedRow;
+        this.updateSelectedStat = updateSelectedStat;
 
         this.hpScale = d3.scaleLinear()
             .domain([0, 255]).range([0, 100]).nice()
@@ -162,7 +163,8 @@ class Infocard {
             .on("click", function() {
                 // Remove the "evo-" from the id
                 const selectedId = this.id.slice(4);
-                that.updateSelected(that.getPokemon(+selectedId))
+                that.updateSelected(that.getPokemon(+selectedId));
+                that.updateSelectedStat(that.getPokemon(+selectedId));
                 that.updateSelectedCircle({pokedex_number: selectedId});
                 that.updateSelectedRow({pokedex_number: selectedId});
             });
